@@ -21,7 +21,7 @@ namespace Download.Controllers
         public BoxClient Initialize()
         {
             var config = new BoxConfig("guako54vyy1hlzu2iblnrpki5npfr0oy", "zepso2qwwfySqdESmBtHBJcpfy9ajVnT", new Uri("http://localhost"));
-            var session = new OAuthSession("bntISF5tuCrnIKXYvlRrALsvwa4JpIUC", "NOT_NEEDED", 3600, "bearer");
+            var session = new OAuthSession("cQ3GHj2OZvGGDWBiDTiQ6i7Ff9jlzA0B", "NOT_NEEDED", 3600, "bearer");
             var client = new BoxClient(config, session);
             return client;
         }
