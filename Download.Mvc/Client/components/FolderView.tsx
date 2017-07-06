@@ -1,10 +1,22 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { match } from 'react-router-dom';
 
-export class FolderView extends React.Component<{}, {}> {
+interface IRouteParams {
+    id: string
+}
+
+export interface IProps {
+    match: match<IRouteParams>
+}
+
+export class FolderView extends React.Component<IProps, any> {
+    componentDidMount = () => {
+        alert('mounted');
+    }
     render() {
+
         return <div>
-            <h1>Viewing folder!</h1>
+            <h1>Viewing folder {this.props.match.params.id}!</h1>
         </div>;
     }
 }
