@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +26,8 @@ namespace Download
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(sharedOptions => sharedOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
+
             // Add framework services.
             services.AddMvc();
         }
@@ -48,6 +52,22 @@ namespace Download
             }
 
             app.UseStaticFiles();
+
+            app.UseCookieAuthentication(new CookieAuthenticationOptions()
+            {
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                LoginPath = new PathString("/signin-cas")
+            });
+
+            app.UseCasAuthentication(new CasOptions
+            {
+                AuthenticationScheme = "UCDCAS",
+                AutomaticChallenge = true,
+                AutomaticAuthenticate = true,
+                CasServerUrlBase = "https://cas.ucdavis.edu/cas/",
+                CallbackPath = new PathString("/signin-cas")
+            });
 
             app.UseMvc(routes =>
             {
