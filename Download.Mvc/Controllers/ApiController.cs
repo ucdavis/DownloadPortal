@@ -20,8 +20,8 @@ namespace Download.Controllers
 
         public BoxClient Initialize()
         {
-            var config = new BoxConfig("guako54vyy1hlzu2iblnrpki5npfr0oy", "zepso2qwwfySqdESmBtHBJcpfy9ajVnT", new Uri("http://localhost:50296"));
-            var session = new OAuthSession("SNdu71adatv2P4jWH5NgxnSXmkPf76xF", "NOT_NEEDED", 3600, "bearer");
+            var config = new BoxConfig("guako54vyy1hlzu2iblnrpki5npfr0oy", "zepso2qwwfySqdESmBtHBJcpfy9ajVnT", new Uri("http://localhost"));
+            var session = new OAuthSession("bntISF5tuCrnIKXYvlRrALsvwa4JpIUC", "NOT_NEEDED", 3600, "bearer");
             var client = new BoxClient(config, session);
             return client;
         }
@@ -37,34 +37,10 @@ namespace Download.Controllers
             const string topFolderId = "27707355823";
 
             // Get items in root folder
-            var items = await _client.FoldersManager.GetFolderItemsAsync("0", 500);
+            var items = await _client.FoldersManager.GetFolderItemsAsync(topFolderId, 500);
             //var downloadUri = await client.FilesManager.GetDownloadUriAsync("179843592716");
 
-            return new JsonResult(new {
-                items
-            });
-        }
-
-        [HttpGet("/app/{term}")]
-        public async Task<IActionResult> App(string term)
-        {
-            // Get items in root folder
-            var items = await _client.FoldersManager.GetFolderItemsAsync(term, 500);
-            var entries = items.Entries;
-            //var downloadUri = await client.FilesManager.GetDownloadUriAsync("179843592716");
-            var listOfItems = new List<FolderContainer>();
-
-            foreach (BoxFile e in entries)
-            {
-                var entry = new FolderContainer();
-                entry.Id = e.Id;
-                entry.Name = e.Name;
-                entry.Type = e.Type;
-                listOfItems.Add(entry);
-            }
-
-            ViewData["AppName"] = term;
-            return View(listOfItems);
+            return Json(items);
         }
 
         [HttpGet("api/folder/{id}")]
@@ -72,10 +48,7 @@ namespace Download.Controllers
         {
             var items = await _client.FoldersManager.GetFolderItemsAsync(id, 500);
 
-            return new JsonResult(new
-            {
-                items
-            });
+            return Json(items);
         }
 
         [HttpGet("api/file/{id}")]
@@ -83,10 +56,7 @@ namespace Download.Controllers
         {
             var items = await _client.FilesManager.GetInformationAsync(id);
 
-            return new JsonResult(new
-            {
-                items
-            });
+            return Json(items);
         }
 
         [HttpGet("api/downloadFile/{id}")]
@@ -94,10 +64,7 @@ namespace Download.Controllers
         {
             var items = await _client.FilesManager.GetDownloadUriAsync(id);
 
-            return new JsonResult(new
-            {
-                items
-            });
+            return Json(items);
         }
 
         public IActionResult Error()
