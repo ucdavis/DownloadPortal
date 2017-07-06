@@ -6,10 +6,23 @@ const bundleOutputDir = './wwwroot/dist';
 
 module.exports = (env) => {
     const isDevBuild = !(env && env.prod);
-    return [{
+    const cssLoader = {
+        loader: 'css-loader',
+        options: {
+            modules: true,
+            importLoaders: 1,
+            localIdentName: '[name]__[local]___[hash:base64:5]',
+            sourceMap: true
+        }
+    };
+    return {
         stats: { modules: false },
-        entry: { 'main': './ClientApp/boot.tsx' },
-        resolve: { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
+        entry: {
+            'root': './Client/root.tsx',
+            'boot': './Client/boot.tsx',
+            'react': ['react', 'react-dom', 'react-router', 'react-toolbox']
+        },
+        resolve: { extensions: [ '.js', '.jsx', '.ts', '.tsx' ] },
         output: {
             path: path.join(__dirname, bundleOutputDir),
             filename: '[name].js',
@@ -17,16 +30,16 @@ module.exports = (env) => {
         },
         module: {
             rules: [
-                { test: /\.tsx?$/, include: /ClientApp/, use: 'awesome-typescript-loader?silent=true' },
-                { test: /\.css$/, use: isDevBuild ? ['style-loader', 'css-loader'] : ExtractTextPlugin.extract({ use: 'css-loader?minimize' }) },
-                { test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' }
+                { test: /\.tsx?$/, include: /Client/, exclude: /node_modules/, use: 'awesome-typescript-loader?silent=true' },
+                { test: /\.css$/, use: isDevBuild ? ['style-loader', cssLoader, 'postcss-loader'] : ExtractTextPlugin.extract({ use: cssLoader }) },
+                { test: /\.(png|jpg|jpeg|gif)$/, use: 'url-loader?limit=25000' },
             ]
         },
         plugins: [
             new CheckerPlugin(),
-            new webpack.DllReferencePlugin({
-                context: __dirname,
-                manifest: require('./wwwroot/dist/vendor-manifest.json')
+            new webpack.optimize.CommonsChunkPlugin({
+                name: 'react',
+                chunks: ['boot']
             })
         ].concat(isDevBuild ? [
             // Plugins that apply in development builds only
@@ -39,5 +52,5 @@ module.exports = (env) => {
             new webpack.optimize.UglifyJsPlugin(),
             new ExtractTextPlugin('site.css')
         ])
-    }];
+    };
 };
