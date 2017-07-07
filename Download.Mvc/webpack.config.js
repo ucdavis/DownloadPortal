@@ -20,7 +20,7 @@ module.exports = (env) => {
         entry: {
             'root': './Client/root.tsx',
             'boot': './Client/boot.tsx',
-            'react': ['react', 'react-dom', 'react-router', 'react-toolbox']
+            'react': ['isomorphic-fetch', 'react', 'react-dom', 'react-router', 'react-toolbox']
         },
         resolve: { extensions: [ '.js', '.jsx', '.ts', '.tsx' ] },
         output: {
