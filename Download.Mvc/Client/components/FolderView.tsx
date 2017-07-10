@@ -35,13 +35,15 @@ export class FolderView extends React.Component<IProps, any> {
     }
 
     render() {
-        const entryList = this.state.data.entries.map((entry) =>
-            <FolderEntry entry={entry} />
+        const entryList = this.state.data.entries.map((entry, index) =>
+            <FolderEntry key={index} entry={entry} />
         );
         return <div>
             <h1>Viewing folder {this.props.match.params.id}!</h1>
             <p>There are {this.state.data.total_count} things in here</p>
-            <table>{entryList}</table>
+            <table>
+                <tbody>{entryList}</tbody>
+            </table>
         </div>;
     }
 }
