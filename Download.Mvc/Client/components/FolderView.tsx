@@ -28,6 +28,11 @@ export class FolderView extends React.Component<IProps, any> {
             .then(response => response.json())
             .then(data => this.setState({ data }));
     }
+    componentWillUpdate = () => {
+        fetch('/api/folder/' + this.props.match.params.id, { credentials: 'same-origin' })
+            .then(response => response.json())
+            .then(data => this.setState({ data }));
+    }
 
     render() {
         const entryList = this.state.data.entries.map((entry) =>
