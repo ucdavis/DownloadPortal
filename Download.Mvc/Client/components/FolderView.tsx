@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { match } from 'react-router-dom';
 import 'isomorphic-fetch';
+import { FolderEntry } from './FolderEntry';
 
 interface IRouteParams {
     id: string
@@ -27,10 +28,16 @@ export class FolderView extends React.Component<IProps, any> {
             .then(response => response.json())
             .then(data => this.setState({ data }));
     }
+
     render() {
+        const entryList = this.state.data.entries.map((entry) =>
+            <FolderEntry entry={entry} />
+        );
         return <div>
             <h1>Viewing folder {this.props.match.params.id}!</h1>
             <p>There are {this.state.data.total_count} things in here</p>
+            <table>{entryList}</table>
         </div>;
     }
 }
+
