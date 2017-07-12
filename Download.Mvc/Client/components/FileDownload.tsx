@@ -1,7 +1,7 @@
 ﻿import * as React from 'react';
 import { match } from 'react-router-dom';
 import 'isomorphic-fetch';
-import { IProps } from './FolderView';
+import { IProps, iconStyle } from './FolderView';
 
 export class FileDownload extends React.Component<any, any>{
     constructor(props) {
@@ -27,10 +27,9 @@ export class FileDownload extends React.Component<any, any>{
     render() {
         return (
             <div>
-                {this.state.loading && 
-                    <h3>Download Loading . . . </h3>
+                {this.state.loading &&
+                    <h3>Download Loading . . .</h3>
                 }
-
             </div>
         );
     }

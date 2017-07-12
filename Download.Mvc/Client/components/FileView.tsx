@@ -4,7 +4,7 @@ import 'isomorphic-fetch';
 import Dialog from 'react-toolbox/lib/dialog';
 import { FolderParent } from './FolderParent';
 import { FileDownload } from './FileDownload';
-import { IProps } from './FolderView';
+import { IProps, iconStyle, listStyle } from './FolderView';
 
 export class FileView extends React.Component<IProps, any> {
     constructor(props) {
@@ -22,7 +22,6 @@ export class FileView extends React.Component<IProps, any> {
     }
 
     downloadLink = () => {
-        //window.open('../downloadFile/' + this.props.match.params.id, '_blank');
         this.setState({ download: true, active: false });
     }
 
@@ -40,14 +39,15 @@ export class FileView extends React.Component<IProps, any> {
         }
 
     render() {
-        const iconStyle = {
-            padding: 5
-        };
         return (
             <div>
                 <h1>Viewing file {this.state.data.name}!</h1>
-                <FolderParent parent={this.state.data.parent} />
-
+                <ul style={listStyle}>
+                    <li><FolderParent data={this.state.data} /></li>
+                    <ul style={listStyle}>
+                        <li><i className="fa fa-file-o" aria-hidden="true" style={iconStyle}></i>{this.state.data.name}</li>
+                    </ul>
+                </ul>
                 <p>File Id: {this.props.match.params.id} <br />
                     <button label='Show my dialog' onClick={this.handleToggle}>
                         <i className="fa fa-download" aria-hidden="true" style={iconStyle}></i>
@@ -56,15 +56,14 @@ export class FileView extends React.Component<IProps, any> {
                 </p>
                 {this.state.active &&
                     <div>
-
                         <Dialog
                             actions={this.actions}
                             active={this.state.active}
                             onEscKeyDown={this.handleToggle}
                             onOverlayClick={this.handleToggle}
-                            title='My awesome dialog'
+                            title='Download Agreement'
                     >
-                            <p>Here you can add arbitrary content. Components like Pickers are using dialogs now.</p>
+                            <p>You must agree the these terms before downloading the file</p>
 
                         </Dialog>
                     </div>}

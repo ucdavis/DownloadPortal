@@ -4,6 +4,14 @@ import 'isomorphic-fetch';
 import { FolderEntries } from './FolderEntries';
 import { FolderParent } from './FolderParent';
 
+export const listStyle = {
+    'listStyleType': 'none',
+    'padding': '0px 0px 0px 15px'
+};
+export const iconStyle = {
+    'padding': '0px 5px 0px 0px'
+};
+
 interface IRouteParams {
     id: string
 }
@@ -48,10 +56,7 @@ export class FolderView extends React.Component<IProps, any> {
         return (
             <div>
                 <h1>Viewing folder {this.state.data.name}!</h1>
-                <p>There are {this.state.data.item_collection.total_count} things in here</p>
-                <p>Folder Id: {this.props.match.params.id}</p>
-                <FolderParent parent={this.state.data.parent} />
-                <FolderEntries entries={this.state.data.item_collection.entries} />
+                <FolderEntries data={this.state.data} />
             </div>
         );
     }
