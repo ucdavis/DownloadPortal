@@ -1,41 +1,36 @@
 ﻿import * as React from 'react';
-import { match , history} from 'react-router-dom';
+import { match } from 'react-router-dom';
 import 'isomorphic-fetch';
-import Dialog from 'react-toolbox/lib/dialog';
+import { IProps } from './FolderView';
 
 export class FileDownload extends React.Component<any, any>{
-    state = {
-        active: false
-    };
+    constructor(props) {
+        super(props);
 
-    handleToggle = () => {
-        this.setState({ active: !this.state.active });
+        this.state = {
+            link: '',
+            loading: true
+        };
     }
-
-    downloadLink = () => {
-        location.href = this.props.link;
+    componentDidMount = () => {
+        // grab link to download
+        fetch('/api/downloadFile/' + this.props.id, { credentials: 'same-origin' })
+            .then(response => response.json())
+            .then(link => this.setState({ link }))
+            .then(loading => this.setState({ loading: false }))
+            .then(this.onLoad);
     }
-
-    actions = [
-        { label: "Cancel", onClick: this.handleToggle },
-        { label: "Agree", onClick: this.downloadLink }
-    ];
+    onLoad = () => {
+        window.location.href = this.state.link;
+    }
 
     render() {
         return (
             <div>
-                <button label='Show my dialog' onClick={this.handleToggle}>
-                    <i className="fa fa-download" aria-hidden="true"></i>
-                </button>
-                <Dialog
-                    actions={this.actions}
-                    active={this.state.active}
-                    onEscKeyDown={this.handleToggle}
-                    onOverlayClick={this.handleToggle}
-                    title='My awesome dialog'
-                >
-                    <p>Here you can add arbitrary content. Components like Pickers are using dialogs now.</p>
-                </Dialog>
+                {this.state.loading && 
+                    <h3>Download Loading . . . </h3>
+                }
+
             </div>
         );
     }
