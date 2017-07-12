@@ -3,6 +3,7 @@ import { match } from 'react-router-dom';
 import 'isomorphic-fetch';
 import { Link } from 'react-router-dom';
 import { FileDownload } from './FileDownload';
+import { FolderParent } from './FolderParent';
 
 interface IRouteParams {
     id: string
@@ -35,6 +36,9 @@ export class FileView extends React.Component<IProps, any> {
 
     render() {
         return <div>
+            <h1>Viewing file {this.state.data.name}!</h1>
+            <p>File Id: {this.props.match.params.id}</p>
+            <FolderParent parent={this.state.data.parent} />
             <FileDownload link={this.state.link}/>
         </div>;
     }
