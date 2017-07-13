@@ -1,6 +1,7 @@
 ﻿import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { iconStyle } from './FolderView';
+import { FileView } from './FileView';
 
 export class FolderEntry extends React.Component<any, any>{
     render() {
@@ -13,8 +14,7 @@ export class FolderEntry extends React.Component<any, any>{
                      </div>}
                 {this.props.entry.type === 'file' &&
                     <div>
-                    <i className="fa fa-file-o" aria-hidden="true" style={iconStyle}></i>
-                    <Link to={`../file/${this.props.entry.id}`}>{this.props.entry.name}</Link>
+                    <FileView data={this.props.entry} />
                     </div>}
             </li>
         );

@@ -23,7 +23,7 @@ namespace Download.Controllers
         public BoxClient Initialize()
         {
             var config = new BoxConfig("guako54vyy1hlzu2iblnrpki5npfr0oy", "zepso2qwwfySqdESmBtHBJcpfy9ajVnT", new Uri("http://localhost"));
-            var session = new OAuthSession("QS1W40FUbaEAT2AuEzaX89npzXnicw6H", "NOT_NEEDED", 3600, "bearer");
+            var session = new OAuthSession("hsmPGNdKJzC5r45Ecp4VsoaCFrFT6nny", "NOT_NEEDED", 3600, "bearer");
             var client = new BoxClient(config, session);
             return client;
         }
@@ -65,6 +65,14 @@ namespace Download.Controllers
         public async Task<JsonResult> DownloadFile(string id)
         {
             var items = await _client.FilesManager.GetDownloadUriAsync(id);
+
+            return Json(items);
+        }
+
+        [HttpGet("api/previewFile/{id}")]
+        public async Task<JsonResult> previewFile(string id)
+        {
+            var items = await _client.FilesManager.GetPreviewLinkAsync(id);
 
             return Json(items);
         }
