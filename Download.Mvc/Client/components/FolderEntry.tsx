@@ -29,17 +29,28 @@ export class FolderEntry extends React.Component<any, any>{
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (this.props.entry.id !== nextProps.entry.id) {
+            if (nextProps.entry.name === 'README.md') {
+                this.updateReadmeID(nextProps.entry.id);
+            }
+            if (nextProps.entry.name === 'LICENSE.txt') {
+                this.updateLicenseID(nextProps.entry.id);
+            }
+        }
+    }
+
     render() {
         return (
             <li>
                 {this.props.entry.type === 'folder' &&
                     <div>
                     <i className="fa fa-folder" aria-hidden="true" style={iconStyle}></i>
-                        <Link to={this.props.entry.id}>{this.props.entry.name}</Link>
+                    <Link to={this.props.entry.id}> { this.props.entry.name }</Link>
                      </div>}
                 {this.props.entry.type === 'file' &&
                     <div>
-                    <FileView data={this.props.entry} licenseID={this.props.licenseID}/>
+                    <FileView data={this.props.entry} licenseID={this.props.licenseID} readmeID={this.props.readmeID}/>
                     </div>}
             </li>
         );

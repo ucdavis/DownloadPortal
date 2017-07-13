@@ -7,25 +7,19 @@ import { FilePreview } from './FilePreview';
 export class FolderEntries extends React.Component<any, any>{
     constructor(props) {
         super(props);
-        this.getReadmeID = this.getReadmeID.bind(this);
-
-        this.state = {
-            readmeID: null,
-            licenseID: null
-        };
     }
 
     getReadmeID = (id) => {
-        this.setState({readmeID: id});
+        this.props.getReadmeID(id);
     }
 
     getLicenseID = (id) => {
-        this.setState({ licenseID: id });
+        this.props.getLicenseID(id);
     }
 
     render() {
         let entryList = this.props.data.item_collection.entries.map((entry, index) =>
-            <FolderEntry key={index} entry={entry} updateReadmeID={this.getReadmeID} updateLicenseID={this.getLicenseID} licenseID={this.state.licenseID}/>
+            <FolderEntry key={index} entry={entry} updateReadmeID={this.getReadmeID} updateLicenseID={this.getLicenseID} licenseID={this.props.licenseID}/>
         );
 
         if (this.props.data.parent) {
@@ -41,7 +35,7 @@ export class FolderEntries extends React.Component<any, any>{
                                 </ul>
                             </ul>
                     </ul>
-                <FilePreview id={this.state.readmeID} />
+                <FilePreview id={this.props.readmeID} />
                 </div>
             );
         }
@@ -55,7 +49,7 @@ export class FolderEntries extends React.Component<any, any>{
                             {entryList}
                         </ul>
                     </ul>
-                    <FilePreview id={this.state.readmeID} />
+                    <FilePreview id={this.props.readmeID} />
                 </div>
             );
         }

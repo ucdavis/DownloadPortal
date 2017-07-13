@@ -23,6 +23,9 @@ export class FolderView extends React.Component<IProps, any> {
     constructor(props) {
         super(props);
 
+        this.getLicenseID = this.getLicenseID.bind(this);
+        this.getReadmeID = this.getReadmeID.bind(this);
+
         this.state = {
             data: {
                 item_collection: {
@@ -32,9 +35,21 @@ export class FolderView extends React.Component<IProps, any> {
                 parent: {
                     id: 0
                 }
-            }
+            },
+            licenseID: null,
+            readmeID:null
         };
     }
+
+
+    getLicenseID = (id) => {
+        this.setState({ licenseID: id });
+    }
+
+    getReadmeID = (id) => {
+        this.setState({ readmeID: id });
+    }
+
     componentDidMount = () => {
         // go grab the folder info we are looking at
         fetch('/api/folder/' + this.props.match.params.id, { credentials: 'same-origin' })
@@ -53,7 +68,7 @@ export class FolderView extends React.Component<IProps, any> {
 
     render() {
         return (
-                <FolderEntries data={this.state.data} />
+            <FolderEntries data={this.state.data} getLicenseID={this.getLicenseID} licenseID={this.state.licenseID} getReadmeID={this.getReadmeID} readmeID = { this.state.readmeID } />
         );
     }
 }
