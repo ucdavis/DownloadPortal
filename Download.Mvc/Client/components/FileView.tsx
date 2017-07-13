@@ -2,7 +2,6 @@
 import 'isomorphic-fetch';
 import Dialog from 'react-toolbox/lib/dialog';
 import { FileDownload } from './FileDownload';
-import { iconStyle } from './FolderView';
 import { FilePreview } from './FilePreview';
 
 export class FileView extends React.Component<any, any> {
@@ -10,14 +9,13 @@ export class FileView extends React.Component<any, any> {
         super(props);
 
         this.state = {
-            data: {},
             active: false,
             download: false
         };
     }
 
     handleToggle = () => {
-        this.setState({ active: !this.state.active });
+        this.setState({ active: !this.state.active, download: false });
     }
 
     downloadLink = () => {
@@ -29,19 +27,11 @@ export class FileView extends React.Component<any, any> {
         { label: "Agree", onClick: this.downloadLink }
     ];
 
-    componentDidMount = () => {
-        // go grab the file info we are looking at
-        fetch('/api/file/' + this.props.data.id, { credentials: 'same-origin' })
-            .then(response => response.json())
-            .then(data => this.setState({ data }));
-
-        }
-
     render() {
         return (
             <div>
-                <i className="fa fa-file-o" style={iconStyle}></i>
                 <a href="#" label='Show download info' onClick={this.handleToggle}>
+                    <i className="fa fa-file-o"></i>
                     {this.props.data.name}
                 </a>
                     {this.state.active &&
@@ -53,9 +43,7 @@ export class FileView extends React.Component<any, any> {
                             title='Download Agreement'
                             >
                             <h4>{this.props.data.name}</h4>
-                            <p>{this.state.data.description}</p>
-                                <FilePreview id={this.props.licenseID} />
-                            
+                            <FilePreview id={this.props.licenseID} />
                         </Dialog>
                     }
                 {!this.state.active && this.state.download &&

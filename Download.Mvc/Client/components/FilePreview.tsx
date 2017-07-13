@@ -10,20 +10,19 @@ export class FilePreview extends React.Component<any, any>{
         };
     }
     componentDidMount = () => {
-        // grab link to download
-        if (this.props.id) {
-            fetch('/api/previewFile/' + this.props.id, { credentials: 'same-origin' })
-                .then(response => response.json())
-                .then(link => this.setState({ link }));
-        }
+        if (!this.props.id)
+            return;
+        fetch(`/api/previewFile/${this.props.id}`, { credentials: 'same-origin' })
+            .then(response => response.json())
+            .then(link => this.setState({ link }));
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.id !== this.props.id) {
-            fetch('/api/previewFile/' + nextProps.id, { credentials: 'same-origin' })
-                .then(response => response.json())
-                .then(link => this.setState({ link }));
-        }
+        if (nextProps.id === this.props.id)
+            return;
+        fetch(`/api/previewFile/${nextProps.id}`, { credentials: 'same-origin' })
+            .then(response => response.json())
+            .then(link => this.setState({ link }));
     }
     render() {
         return (
