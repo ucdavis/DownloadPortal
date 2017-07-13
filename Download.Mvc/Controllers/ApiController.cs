@@ -23,7 +23,7 @@ namespace Download.Controllers
         public BoxClient Initialize()
         {
             var config = new BoxConfig("guako54vyy1hlzu2iblnrpki5npfr0oy", "zepso2qwwfySqdESmBtHBJcpfy9ajVnT", new Uri("http://localhost"));
-            var session = new OAuthSession("0pCQ9dWspzDWkEd2mFlHXusklzzLaZYk", "NOT_NEEDED", 3600, "bearer");
+            var session = new OAuthSession("hsmPGNdKJzC5r45Ecp4VsoaCFrFT6nny", "NOT_NEEDED", 3600, "bearer");
             var client = new BoxClient(config, session);
             return client;
         }
@@ -39,7 +39,7 @@ namespace Download.Controllers
             const string topFolderId = "27707355823";
 
             // Get items in root folder
-            var items = await _client.FoldersManager.GetFolderItemsAsync(topFolderId, 500);
+            var items = await _client.FoldersManager.GetInformationAsync(topFolderId);
             //var downloadUri = await client.FilesManager.GetDownloadUriAsync("179843592716");
 
             return Json(items);
@@ -48,7 +48,7 @@ namespace Download.Controllers
         [HttpGet("api/folder/{id}")]
         public async Task<JsonResult> GetFolderInfo(string id)
         {
-            var items = await _client.FoldersManager.GetFolderItemsAsync(id, 500);
+            var items = await _client.FoldersManager.GetInformationAsync(id);
 
             return Json(items);
         }
@@ -65,6 +65,14 @@ namespace Download.Controllers
         public async Task<JsonResult> DownloadFile(string id)
         {
             var items = await _client.FilesManager.GetDownloadUriAsync(id);
+
+            return Json(items);
+        }
+
+        [HttpGet("api/previewFile/{id}")]
+        public async Task<JsonResult> previewFile(string id)
+        {
+            var items = await _client.FilesManager.GetPreviewLinkAsync(id);
 
             return Json(items);
         }

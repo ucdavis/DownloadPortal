@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { match } from 'react-router-dom';
 import 'isomorphic-fetch';
+import { FolderEntries } from './FolderEntries';
 
 interface IRouteParams {
     id: string
@@ -16,21 +17,47 @@ export class FolderView extends React.Component<IProps, any> {
 
         this.state = {
             data: {
-                total_count: 0,
-                entries: []
-            }
+                item_collection: {
+                    total_count: 0,
+                    entries: []
+                },
+                parent: {
+                    id: 0
+                }
+            },
+            licenseID: null,
+            readmeID:null
         };
     }
+
+
+    getLicenseID = (id) => {
+        this.setState({ licenseID: id });
+    }
+
+    getReadmeID = (id) => {
+        this.setState({ readmeID: id });
+    }
+
     componentDidMount = () => {
         // go grab the folder info we are looking at
-        fetch('/api/folder/' + this.props.match.params.id, { credentials: 'same-origin' })
+        fetch(`/api/folder/${this.props.match.params.id}`, { credentials: 'same-origin' })
             .then(response => response.json())
             .then(data => this.setState({ data }));
     }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.match.params.id === this.props.match.params.id)
+            return;
+        fetch(`/api/folder/${nextProps.match.params.id}`, { credentials: 'same-origin' })
+            .then(response => response.json())
+            .then(data => this.setState({ data }));
+    }
+
     render() {
-        return <div>
-            <h1>Viewing folder {this.props.match.params.id}!</h1>
-            <p>There are {this.state.data.total_count} things in here</p>
-        </div>;
+        return (
+            <FolderEntries data={this.state.data} getLicenseID={this.getLicenseID} licenseID={this.state.licenseID} getReadmeID={this.getReadmeID} readmeID = { this.state.readmeID } />
+        );
     }
 }
+
