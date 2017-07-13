@@ -2,7 +2,6 @@ import * as React from 'react';
 import { match } from 'react-router-dom';
 import 'isomorphic-fetch';
 import { FolderEntries } from './FolderEntries';
-import { FolderParent } from './FolderParent';
 
 export const listStyle = {
     'listStyleType': 'none',
@@ -54,10 +53,7 @@ export class FolderView extends React.Component<IProps, any> {
 
     render() {
         return (
-            <div>
-                <h1>Viewing folder {this.state.data.name}!</h1>
                 <FolderEntries data={this.state.data} />
-            </div>
         );
     }
 }

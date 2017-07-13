@@ -4,6 +4,31 @@ import { iconStyle } from './FolderView';
 import { FileView } from './FileView';
 
 export class FolderEntry extends React.Component<any, any>{
+    constructor(props) {
+        super(props);
+        this.updateReadmeID = this.updateReadmeID.bind(this);
+        this.updateLicenseID = this.updateLicenseID.bind(this);
+    }
+
+    updateReadmeID(newID) {
+        this.props.updateReadmeID(newID);
+    }
+
+    updateLicenseID(newID) {
+        this.props.updateLicenseID(newID);
+    }
+
+    componentWillMount = () => {
+        if (this.props.entry.name === 'README.md')
+        {
+            this.updateReadmeID(this.props.entry.id);
+        }
+        if (this.props.entry.name === 'LICENSE.txt')
+        {
+            this.updateLicenseID(this.props.entry.id);
+        }
+    }
+
     render() {
         return (
             <li>
@@ -14,7 +39,7 @@ export class FolderEntry extends React.Component<any, any>{
                      </div>}
                 {this.props.entry.type === 'file' &&
                     <div>
-                    <FileView data={this.props.entry} />
+                    <FileView data={this.props.entry} licenseID={this.props.licenseID}/>
                     </div>}
             </li>
         );

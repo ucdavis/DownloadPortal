@@ -2,7 +2,7 @@
 import 'isomorphic-fetch';
 import Dialog from 'react-toolbox/lib/dialog';
 import { FileDownload } from './FileDownload';
-import { iconStyle, listStyle } from './FolderView';
+import { iconStyle } from './FolderView';
 import { FilePreview } from './FilePreview';
 
 export class FileView extends React.Component<any, any> {
@@ -54,8 +54,8 @@ export class FileView extends React.Component<any, any> {
                             >
                             <h4>{this.props.data.name}</h4>
                             <p>{this.state.data.description}</p>
-                            <FilePreview id={this.props.data.id} />
-
+                                <FilePreview id={this.props.licenseID} />
+                            
                         </Dialog>
                     }
                 {!this.state.active && this.state.download &&

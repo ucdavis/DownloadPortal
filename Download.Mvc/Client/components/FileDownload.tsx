@@ -1,7 +1,6 @@
 ﻿import * as React from 'react';
 import { match } from 'react-router-dom';
 import 'isomorphic-fetch';
-import { IProps, iconStyle } from './FolderView';
 
 export class FileDownload extends React.Component<any, any>{
     constructor(props) {
