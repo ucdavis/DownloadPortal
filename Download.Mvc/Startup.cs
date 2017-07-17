@@ -26,6 +26,9 @@ namespace Download
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
             services.AddAuthentication(sharedOptions => sharedOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
 
             // Add framework services.

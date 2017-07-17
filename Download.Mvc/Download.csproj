@@ -4,6 +4,7 @@
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <IsPackable>false</IsPackable>
     <PackageTargetFallback>portable-net45+win8</PackageTargetFallback>
+    <UserSecretsId>4bcc56a8-bf59-480f-9ee2-9397117e97b7</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AspNetCore.Security.CAS" Version="1.0.0" />
