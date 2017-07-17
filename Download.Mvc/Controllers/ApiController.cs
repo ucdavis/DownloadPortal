@@ -7,6 +7,7 @@ using Box.V2.Config;
 using Box.V2.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Download.Controllers
 {
@@ -14,33 +15,26 @@ namespace Download.Controllers
     public class ApiController : Controller
     {
         private readonly BoxClient _client;
-
-        public ApiController()
+        private AppSettings _appSettings;
+        public ApiController(IOptions<AppSettings> appSettings)
         {
+            _appSettings = appSettings.Value;
             _client = Initialize();
         }
 
         public BoxClient Initialize()
         {
-            var config = new BoxConfig("guako54vyy1hlzu2iblnrpki5npfr0oy", "zepso2qwwfySqdESmBtHBJcpfy9ajVnT", new Uri("http://localhost"));
-            var session = new OAuthSession("hsmPGNdKJzC5r45Ecp4VsoaCFrFT6nny", "NOT_NEEDED", 3600, "bearer");
+            var config = new BoxConfig(_appSettings.ClientId, _appSettings.ClientSecret, new Uri("http://localhost"));
+            var session = new OAuthSession(_appSettings.Session, "NOT_NEEDED", 3600, "bearer");
             var client = new BoxClient(config, session);
             return client;
         }
 
-        /// <summary>
-        /// Get a list of everything inside the given root folder
-        /// </summary>
-        /// <returns></returns>
         [HttpGet("api")]
         public async Task<JsonResult> Get()
         {
-            // TODO: move to settings
-            const string topFolderId = "27707355823";
-
             // Get items in root folder
-            var items = await _client.FoldersManager.GetInformationAsync(topFolderId);
-            //var downloadUri = await client.FilesManager.GetDownloadUriAsync("179843592716");
+            var items = await _client.FoldersManager.GetInformationAsync(_appSettings.TopFolderId);
 
             return Json(items);
         }
