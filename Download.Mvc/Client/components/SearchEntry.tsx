@@ -1,6 +1,5 @@
 ﻿import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { FileView } from './FileView';
 
 export class SearchEntry extends React.Component<any, any>{
     constructor(props) {
