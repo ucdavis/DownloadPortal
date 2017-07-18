@@ -12,7 +12,7 @@ export class FilePreview extends React.Component<any, any>{
     componentDidMount = () => {
         if (!this.props.id)
             return;
-        fetch(`/api/previewFile/${this.props.id}`, { credentials: 'same-origin' })
+        fetch(`/api/PreviewFile/${this.props.id}`, { credentials: 'same-origin' })
             .then(response => response.json())
             .then(link => this.setState({ link }));
     }
@@ -20,7 +20,7 @@ export class FilePreview extends React.Component<any, any>{
     componentWillReceiveProps(nextProps) {
         if (nextProps.id === this.props.id)
             return;
-        fetch(`/api/previewFile/${nextProps.id}`, { credentials: 'same-origin' })
+        fetch(`/api/PreviewFile/${nextProps.id}`, { credentials: 'same-origin' })
             .then(response => response.json())
             .then(link => this.setState({ link }));
     }

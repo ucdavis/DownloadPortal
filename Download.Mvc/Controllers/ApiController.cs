@@ -63,11 +63,25 @@ namespace Download.Controllers
         }
 
         [HttpGet("api/previewFile/{id}")]
-        public async Task<JsonResult> previewFile(string id)
+        public async Task<JsonResult> PreviewFile(string id)
         {
             var items = await _client.FilesManager.GetPreviewLinkAsync(id);
 
             return Json(items);
+        }
+
+        [HttpGet("api/search/{query}")]
+        public async Task<JsonResult> Search(string query)
+        {
+            List<string> fileExtensionsList = new List<string>();
+            fileExtensionsList.Add("md");
+            fileExtensionsList.Add("");
+            List<string> typeList = new List<string>();
+            typeList.Add("folder");
+            typeList.Add("file");
+            var files = await _client.SearchManager.SearchAsync(query);
+
+            return Json(files);
         }
 
         public IActionResult Error()
