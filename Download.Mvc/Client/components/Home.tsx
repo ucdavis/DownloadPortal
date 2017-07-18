@@ -6,7 +6,7 @@ export class Home extends React.Component<{}, {}> {
         return <div>
             <h1>Hello, world!</h1>
             <p>Welcome to the new Download!</p>
-            <Link to='/folder/27707355823'>Get started!</Link>
+            <Link to='/folder/27707355823/Download'>Get started!</Link>
         </div>;
     }
 }

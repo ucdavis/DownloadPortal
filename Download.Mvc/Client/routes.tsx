@@ -6,5 +6,5 @@ import { FolderView } from './components/FolderView';
 
 export const routes = <Layout>
     <Route exact path='/' component={Home} />
-    <Route path='/folder/:id' component={FolderView} />
+    <Route path='/folder/:id/' component={FolderView} />
 </Layout>;
