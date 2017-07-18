@@ -30,9 +30,12 @@ export class Search extends React.Component<IProps, any> {
     render() {
         return (
             <div>
-                Searching for: {this.props.match.params.query}<br />
+                <h3>Searching for: {this.props.match.params.query}</h3>
                 {this.state.items &&
                     <SearchEntries entries={this.state.items.entries} />
+                }
+                {this.state.items && !this.state.items.total_count &&
+                    <p>No results were found</p>
                 }
             </div>
         );
