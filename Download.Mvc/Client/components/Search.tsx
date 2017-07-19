@@ -3,6 +3,8 @@ import { match } from 'react-router-dom';
 import 'isomorphic-fetch';
 import { IProps } from './FolderView';
 import { SearchEntries } from './SearchEntries';
+import { Link } from 'react-router-dom';
+import { SearchBar } from './SearchBar';
 
 export class Search extends React.Component<IProps, any> {
     constructor(props) {
@@ -15,28 +17,34 @@ export class Search extends React.Component<IProps, any> {
     componentDidMount = () => {
         if (!this.props.match.params.query)
             return;
-        fetch(`/api/Search/${this.props.match.params.query}`, { credentials: 'same-origin' })
+        fetch(`/api/Search/${decodeURIComponent(this.props.match.params.query)}`, { credentials: 'same-origin' })
             .then(response => response.json())
             .then(items => this.setState({ items }));
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.match.params.query === this.props.match.params.query)
+        if (decodeURIComponent(nextProps.match.params.query) === decodeURIComponent(this.props.match.params.query))
             return;
-        fetch(`/api/Search/${nextProps.match.params.query}`, { credentials: 'same-origin' })
+        fetch(`/api/Search/${decodeURIComponent(nextProps.match.params.query)}`, { credentials: 'same-origin' })
             .then(response => response.json())
             .then(items => this.setState({ items }));
     }
     render() {
         return (
             <div>
-                <h3>Searching for: {this.props.match.params.query}</h3>
+                <SearchBar />
+                <h3>Searching for: {decodeURIComponent(this.props.match.params.query)}</h3>
+                <p>
+                    <Link to='/folder/27707355823/Download'>
+                        <i className="fa fa-folder" aria-hidden="true"></i>
+                        Return Home
+                    </Link>
+                </p>
+                <ul>
                 {this.state.items &&
-                    <SearchEntries entries={this.state.items.entries} />
+                    <SearchEntries items={this.state.items} />
                 }
-                {this.state.items && !this.state.items.total_count &&
-                    <p>No results were found</p>
-                }
+                </ul>
             </div>
         );
     }
