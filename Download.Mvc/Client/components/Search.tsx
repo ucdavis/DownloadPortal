@@ -12,23 +12,26 @@ export class Search extends React.Component<IProps, any> {
 
         this.state = {
             items: '',
+            loading: true
         };
     }
     componentDidMount = () => {
         if (!this.props.match.params.query)
             return;
-        fetch(`/api/Search/${decodeURIComponent(this.props.match.params.query)}`, { credentials: 'same-origin' })
+        fetch(`/api/Search/${this.props.match.params.query}`, { credentials: 'same-origin' })
             .then(response => response.json())
-            .then(items => this.setState({ items }));
+            .then(items => this.setState({ items, loading: false }));
     }
 
     componentWillReceiveProps(nextProps) {
         if (decodeURIComponent(nextProps.match.params.query) === decodeURIComponent(this.props.match.params.query))
             return;
-        fetch(`/api/Search/${decodeURIComponent(nextProps.match.params.query)}`, { credentials: 'same-origin' })
+        this.setState({ loading: true });
+        fetch(`/api/Search/${nextProps.match.params.query}`, { credentials: 'same-origin' })
             .then(response => response.json())
-            .then(items => this.setState({ items }));
+            .then(items => this.setState({ items, loading: false }));
     }
+
     render() {
         return (
             <div>
@@ -41,10 +44,12 @@ export class Search extends React.Component<IProps, any> {
                     </Link>
                 </p>
                 <ul>
-                {this.state.items &&
+                {this.state.items && !this.state.loading &&
                     <SearchEntries items={this.state.items} />
                 }
                 </ul>
+                {this.state.loading && 
+                    <p>Loading results . . . </p>}
             </div>
         );
     }

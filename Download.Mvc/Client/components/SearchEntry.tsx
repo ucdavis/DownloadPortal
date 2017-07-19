@@ -17,7 +17,7 @@ export class SearchEntry extends React.Component<any, any>{
 
             <li>
                     <div>
-                        <Link to={`../folder/${this.props.entry.folder.folderId}/`}>
+                        <Link to={`../folder/${this.props.entry.folder.folderId}/${this.props.entry.folder.folderName}`}>
                         <i className="fa fa-folder" aria-hidden="true"></i>
                         {this.props.entry.folder.folderName}</Link>
                         {fileList}
