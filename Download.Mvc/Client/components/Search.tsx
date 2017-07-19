@@ -43,11 +43,10 @@ export class Search extends React.Component<IProps, any> {
                         Return Home
                     </Link>
                 </p>
-                <ul>
                 {this.state.items && !this.state.loading &&
+                <ul>
                     <SearchEntries items={this.state.items} />
-                }
-                </ul>
+                </ul>}
                 {this.state.loading && 
                     <p>Loading results . . . </p>}
             </div>

@@ -8,11 +8,11 @@ export class SearchEntry extends React.Component<any, any>{
     }
 
     render() {
-        let fileList = "";
-        if (this.props.entry.files) {
-            fileList = this.props.entry.files.map((entry, index) =>
-                <SearchFileList key={index} entry={entry} />);      
-                }
+        if (!this.props.entry.files) {
+            return;
+        }
+        let fileList = this.props.entry.files.map((entry, index) =>
+            <SearchFileList key={index} entry={entry} />);      
         return (
 
             <li>
