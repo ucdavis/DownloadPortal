@@ -27,7 +27,7 @@ export class FolderView extends React.Component<IProps, any> {
                 }
             },
             licenseID: null,
-            readmeID: null,
+            readmeID: null
         };
     }
 
