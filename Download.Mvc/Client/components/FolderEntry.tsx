@@ -34,7 +34,7 @@ export class FolderEntry extends React.Component<any, any>{
             <li>
                 {this.props.entry.type === 'folder' &&
                     <div>
-                    <Link to={this.props.entry.id}>
+                        <Link to={`../${this.props.entry.id}/${encodeURIComponent(this.props.entry.name)}`}>
                         <i className="fa fa-folder" aria-hidden="true"></i>
                         {this.props.entry.name}</Link>
                      </div>}

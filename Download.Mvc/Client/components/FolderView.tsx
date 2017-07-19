@@ -2,6 +2,7 @@ import * as React from 'react';
 import { match } from 'react-router-dom';
 import 'isomorphic-fetch';
 import { FolderEntries } from './FolderEntries';
+import { SearchBar } from './SearchBar';
 
 interface IRouteParams {
     id: string
@@ -26,10 +27,9 @@ export class FolderView extends React.Component<IProps, any> {
                 }
             },
             licenseID: null,
-            readmeID:null
+            readmeID: null
         };
     }
-
 
     getLicenseID = (id) => {
         this.setState({ licenseID: id });
@@ -56,7 +56,10 @@ export class FolderView extends React.Component<IProps, any> {
 
     render() {
         return (
-            <FolderEntries data={this.state.data} getLicenseID={this.getLicenseID} licenseID={this.state.licenseID} getReadmeID={this.getReadmeID} readmeID = { this.state.readmeID } />
+            <div>
+                <SearchBar />
+                <FolderEntries data={this.state.data} getLicenseID={this.getLicenseID} licenseID={this.state.licenseID} getReadmeID={this.getReadmeID} readmeID = { this.state.readmeID } />
+            </div>
         );
     }
 }

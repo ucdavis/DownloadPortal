@@ -7,6 +7,7 @@ using Box.V2.Config;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System.Linq;
 
 namespace Download.Controllers
 {
@@ -63,11 +64,33 @@ namespace Download.Controllers
         }
 
         [HttpGet("api/previewFile/{id}")]
-        public async Task<JsonResult> previewFile(string id)
+        public async Task<JsonResult> PreviewFile(string id)
         {
             var items = await _client.FilesManager.GetPreviewLinkAsync(id);
 
             return Json(items);
+        }
+
+        [HttpGet("api/search/{query}")]
+        public async Task<JsonResult> Search(string query)
+        {
+            List<string> fileExtensionsList = new List<string>();
+            fileExtensionsList.Add("md");
+            List<string> contentTypeList = new List<string>();
+            contentTypeList.Add("name");
+            var readme = await _client.SearchManager.SearchAsync(query, fileExtensions: fileExtensionsList, type: "file");
+            var folders = await _client.SearchManager.SearchAsync(query, type: "folder");
+            var file = await _client.SearchManager.SearchAsync(query, type: "file", contentTypes: contentTypeList);
+
+            var allFiles = readme.Entries.Select(e => new { fileId = e.Id, fileName = e.Name, folderId = e.Parent.Id, folderName = e.Parent.Name })
+                .Union(file.Entries.Select(e => new { fileId = e.Id, fileName = e.Name, folderId = e.Parent.Id, folderName = e.Parent.Name })).Distinct();
+            var allFolders = folders.Entries.Select(e => new { fileId = string.Empty, fileName = string.Empty, folderId = e.Id, folderName = e.Name });
+            var allFilesAndFolders = allFiles.Union(allFolders);
+            var grouped = from f in allFilesAndFolders
+                          group f by new { f.folderId, f.folderName} into g
+                          select new { folder = g.Key, files = g.Where(x => !string.IsNullOrEmpty(x.fileId)) };
+            
+            return Json(grouped);
         }
 
         public IActionResult Error()
