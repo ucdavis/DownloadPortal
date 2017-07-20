@@ -1,5 +1,6 @@
 ﻿import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { FileIcon } from './FileIcon';
 import { FileView } from './FileView';
 
 export class FolderEntry extends React.Component<any, any>{
@@ -33,8 +34,8 @@ export class FolderEntry extends React.Component<any, any>{
         if (this.props.entry.type === 'folder') {
             return (
                 <tr>
-                    <td>
-                        <i className="fa fa-folder" />
+                    <td className="icon">
+                        <i className="fa fa-folder-o" />
                     </td>
                     <td>
                         <Link to={`../${this.props.entry.id}/${encodeURIComponent(this.props.entry.name)}`}>
@@ -47,8 +48,8 @@ export class FolderEntry extends React.Component<any, any>{
             // TODO: decide if we want to show readme & license
             return (
                 <tr>
-                    <td>
-                        <i className="fa fa-file" />
+                    <td className="icon">
+                        <FileIcon fileName={this.props.entry.name} />
                     </td>
                     <td>
                         <FileView data={this.props.entry} licenseID={this.props.licenseID} readmeID={this.props.readmeID}/>

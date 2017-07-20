@@ -43,3 +43,9 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-valid {
     display: none;
 }
+
+td.icon {
+    width: 17px;
+    padding-right: 2px;
+    padding-left: 10px;
+}

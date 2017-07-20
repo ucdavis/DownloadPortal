@@ -8,8 +8,8 @@ export class FolderParent extends React.Component<any, any>{
     render() {
         return (
             <tr>
-                <td>
-                    <i className="fa fa-folder" aria-hidden="true"></i>
+                <td className="icon">
+                    
                 </td>
                 <td>
                     <Link to={`../${this.props.data.parent.id}/${this.props.data.parent.name}`}>
