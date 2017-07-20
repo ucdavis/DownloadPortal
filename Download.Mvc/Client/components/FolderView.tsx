@@ -4,6 +4,7 @@ import 'isomorphic-fetch';
 import { FolderEntries } from './FolderEntries';
 import { SearchBar } from './SearchBar';
 import { Breadcrumbs } from './Breadcrumbs';
+import { Error } from './Error';
 import ProgressBar from 'react-toolbox/lib/progress_bar';
 
 interface IRouteParams {
@@ -46,7 +47,8 @@ export class FolderView extends React.Component<IProps, any> {
         // go grab the folder info we are looking at
         fetch(`/api/folder/${this.props.match.params.id}`, { credentials: 'same-origin' })
             .then(response => response.json())
-            .then(data => this.setState({ data, loading: false }));
+            .then(data => this.setState({ data, loading: false }))
+            .catch(_ => this.setState({ error: true, loading: false }));
     }
 
     componentWillReceiveProps(nextProps) {
@@ -56,11 +58,14 @@ export class FolderView extends React.Component<IProps, any> {
 
         fetch(`/api/folder/${nextProps.match.params.id}`, { credentials: 'same-origin' })
             .then(response => response.json())
-            .then(data => this.setState({ data, loading: false }));
+            .then(data => this.setState({ data, loading: false }))
+            .catch(_ => this.setState({ error: true, loading: false }));
     }
 
     render() {
         if (this.state.loading) return <ProgressBar mode="indeterminate" />;
+
+        if (this.state.error) return <Error />;
         return (
             <div>
                 <SearchBar />
