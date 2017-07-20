@@ -1,6 +1,6 @@
 ﻿import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { SearchFileList } from './SearchFileList';
+import { SearchFileView } from './SearchFileView';
 
 export class SearchEntry extends React.Component<any, any>{
     constructor(props) {
@@ -11,7 +11,7 @@ export class SearchEntry extends React.Component<any, any>{
         if (this.props.entry.files.length === 0) return null;
 
         let fileList = this.props.entry.files.map((entry, index) =>
-            <SearchFileList key={index} entry={entry} />
+            <SearchFileView key={index} entry={entry} />
         );
 
         return (
