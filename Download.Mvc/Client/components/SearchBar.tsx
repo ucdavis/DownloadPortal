@@ -15,13 +15,17 @@ export class SearchBar extends React.Component<any, any>{
 
     render() {
         return (
-            <form action={`../../search/${encodeURIComponent(this.state.query)}`} method="get">
-                <input type="text" value={this.state.query} placeholder="Search . . ." onChange={this.handleChange} />
-                <Link to={`../../search/${encodeURIComponent(this.state.query)}`}>
-                    <button>
-                        <i className="fa fa-search"></i>
-                    </button>
-                </Link>
+            <form className="form" action={`../../search/${encodeURIComponent(this.state.query)}`} method="get">
+                <div className="row">
+                    <div className="col-lg-6 pull-right">
+                        <div className="input-group">
+                            <input type="text" className="form-control" value={this.state.query} placeholder="Search . . ." onChange={this.handleChange} />
+                            <span className="input-group-btn">
+                                <button className="btn btn-default" type="button">Go!</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </form>
         );
     }
