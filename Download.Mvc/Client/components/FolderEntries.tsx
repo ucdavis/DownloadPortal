@@ -20,12 +20,15 @@ export class FolderEntries extends React.Component<any, any>{
         );
 
         return (
-            <table className="table">
-                <tbody>
-                    {this._renderParent()}
-                    {entryList}
-                </tbody>
-            </table>
-        )
+            <div>
+                <table className="table">
+                    <tbody>
+                        {this._renderParent()}
+                        {entryList}
+                    </tbody>
+                </table>
+                <FilePreview id={this.props.readmeID} />
+            </div>
+        );
     }
 }
