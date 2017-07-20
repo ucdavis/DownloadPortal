@@ -3,6 +3,7 @@ import { match } from 'react-router-dom';
 import 'isomorphic-fetch';
 import { FolderEntries } from './FolderEntries';
 import { SearchBar } from './SearchBar';
+import ProgressBar from 'react-toolbox/lib/progress_bar';
 
 interface IRouteParams {
     id: string
@@ -17,6 +18,7 @@ export class FolderView extends React.Component<IProps, any> {
         super(props);
 
         this.state = {
+            loading: true,
             data: {
                 item_collection: {
                     total_count: 0,
@@ -43,18 +45,21 @@ export class FolderView extends React.Component<IProps, any> {
         // go grab the folder info we are looking at
         fetch(`/api/folder/${this.props.match.params.id}`, { credentials: 'same-origin' })
             .then(response => response.json())
-            .then(data => this.setState({ data }));
+            .then(data => this.setState({ data, loading: false }));
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.match.params.id === this.props.match.params.id)
-            return;
+        if (nextProps.match.params.id === this.props.match.params.id) return;
+
+        this.setState({ loading: true });
+
         fetch(`/api/folder/${nextProps.match.params.id}`, { credentials: 'same-origin' })
             .then(response => response.json())
-            .then(data => this.setState({ data }));
+            .then(data => this.setState({ data, loading: false }));
     }
 
     render() {
+        if (this.state.loading) return <ProgressBar mode="indeterminate" />;
         return (
             <div>
                 <SearchBar />
