@@ -3,6 +3,7 @@ import { match } from 'react-router-dom';
 import 'isomorphic-fetch';
 import { FolderEntries } from './FolderEntries';
 import { SearchBar } from './SearchBar';
+import { Breadcrumbs } from './Breadcrumbs';
 import ProgressBar from 'react-toolbox/lib/progress_bar';
 
 interface IRouteParams {
@@ -63,6 +64,7 @@ export class FolderView extends React.Component<IProps, any> {
         return (
             <div>
                 <SearchBar />
+                <Breadcrumbs data={this.state.data} />
                 <FolderEntries data={this.state.data} getLicenseID={this.getLicenseID} licenseID={this.state.licenseID} getReadmeID={this.getReadmeID} readmeID = { this.state.readmeID } />
             </div>
         );
