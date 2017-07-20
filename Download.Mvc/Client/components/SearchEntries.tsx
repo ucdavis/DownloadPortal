@@ -9,9 +9,11 @@ export class SearchEntries extends React.Component<any, any> {
         let entryList = this.props.items.map((entry, index) =>
             <SearchEntry key={index} entry={entry} />);
         return (
-            <div>
-                {entryList}
-            </div>
+            <table className="table">
+                <tbody>
+                    {entryList}
+                </tbody>
+            </table>
         );
     }
 }
