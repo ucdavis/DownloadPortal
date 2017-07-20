@@ -1,6 +1,9 @@
 {
   "name": "DownloadPortal",
   "version": "0.1.0",
+  "scripts": {
+    "debug": "ASPNETCORE_ENVIRONMENT=Development dotnet run"
+  },
   "devDependencies": {
     "@types/history": "4.5.1",
     "@types/react": "15.0.24",

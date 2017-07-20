@@ -16,6 +16,10 @@ textarea {
     max-width: 280px;
 }
 
+.header__img-bg {
+  background: url(/header-bar.svg) center top/cover no-repeat;
+}
+
 /* styles for validation helpers */
 .field-validation-error {
     color: #b94a48;
@@ -40,4 +44,3 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-valid {
     display: none;
 }
-
