@@ -8,41 +8,27 @@ export class FolderEntries extends React.Component<any, any>{
         super(props);
     }
 
+    _renderParent = () => {
+        if (!this.props.data.parent) return null; // top level folder w/ no parent
+
+        return <FolderParent data={this.props.data} />;
+    }
+
     render() {
         let entryList = this.props.data.item_collection.entries.map((entry, index) =>
-            <FolderEntry key={index} entry={entry} updateReadmeID={this.props.getReadmeID} updateLicenseID={this.props.getLicenseID} licenseID={this.props.licenseID} readmeID={this.props.readmeID}/>
+            <FolderEntry key={index} entry={entry} updateReadmeID={this.props.getReadmeID} updateLicenseID={this.props.getLicenseID} licenseID={this.props.licenseID} readmeID={this.props.readmeID} highlight={entry.id === this.props.highlightFile}/>
         );
 
-        if (this.props.data.parent) {
-            return (
-                <div>
-                    <h1>Viewing folder {this.props.data.name}!</h1>
-                    <ul>
-                        <li><FolderParent data={this.props.data} /></li>
-                            <ul>
-                                <li><i className="fa fa-folder-open" aria-hidden="true"></i>{this.props.data.name}</li>
-                                <ul>
-                                    {entryList}
-                                </ul>
-                            </ul>
-                    </ul>
+        return (
+            <div>
+                <table className="table">
+                    <tbody>
+                        {this._renderParent()}
+                        {entryList}
+                    </tbody>
+                </table>
                 <FilePreview id={this.props.readmeID} />
-                </div>
-            );
-        }
-        else {
-            return (
-                <div>
-                    <h1>Viewing folder {this.props.data.name}!</h1>
-                    <ul>
-                        <li><i className="fa fa-folder-open" aria-hidden="true"></i>{this.props.data.name}</li>
-                        <ul>
-                            {entryList}
-                        </ul>
-                    </ul>
-                    <FilePreview id={this.props.readmeID} />
-                </div>
-            );
-        }
+            </div>
+        );
     }
 }

@@ -1,5 +1,6 @@
 ﻿import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { FileIcon } from './FileIcon';
 import { FileView } from './FileView';
 
 export class FolderEntry extends React.Component<any, any>{
@@ -30,19 +31,34 @@ export class FolderEntry extends React.Component<any, any>{
     }
 
     render() {
-        return (
-            <li>
-                {this.props.entry.type === 'folder' &&
-                    <div>
+        if (this.props.entry.type === 'folder') {
+            return (
+                <tr>
+                    <td className="icon">
+                        <i className="fa fa-folder-o" />
+                    </td>
+                    <td>
                         <Link to={`../${this.props.entry.id}/${encodeURIComponent(this.props.entry.name)}`}>
-                        <i className="fa fa-folder" aria-hidden="true"></i>
-                        {this.props.entry.name}</Link>
-                     </div>}
-                {this.props.entry.type === 'file' && this.props.entry.name !== 'README.md' && this.props.entry.name !== 'LICENSE.txt' &&
-                    <div>
-                    <FileView data={this.props.entry} licenseID={this.props.licenseID} readmeID={this.props.readmeID}/>
-                    </div>}
-            </li>
-        );
+                            {this.props.entry.name}
+                        </Link>
+                    </td>
+                </tr>
+            );
+        } else if (this.props.entry.type === 'file') {
+            // TODO: decide if we want to show readme & license
+            return (
+                <tr className={this.props.highlight && 'warning'}>
+                    <td className="icon">
+                        <FileIcon fileName={this.props.entry.name} />
+                    </td>
+                    <td>
+                        <FileView data={this.props.entry} licenseID={this.props.licenseID} readmeID={this.props.readmeID}/>
+                    </td>
+                </tr>
+            );
+        } else {
+            // shouldn't ever happen
+            return null;
+        }
     }
 }

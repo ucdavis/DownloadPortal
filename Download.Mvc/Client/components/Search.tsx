@@ -39,14 +39,12 @@ export class Search extends React.Component<IProps, any> {
                 <h3>Searching for: {decodeURIComponent(this.props.match.params.query)}</h3>
                 <p>
                     <Link to='/folder/27707355823/Download'>
-                        <i className="fa fa-folder" aria-hidden="true"></i>
-                        Return Home
+                        <i className="fa fa-level-up" aria-hidden="true"></i> Return Home
                     </Link>
                 </p>
                 {this.state.items && !this.state.loading &&
-                <ul>
                     <SearchEntries items={this.state.items} />
-                </ul>}
+                }
                 {this.state.loading && 
                     <p>Loading results . . . </p>}
             </div>

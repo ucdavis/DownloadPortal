@@ -31,7 +31,6 @@ export class FileView extends React.Component<any, any> {
         return (
             <div>
                 <a href="#" label='Show download info' onClick={this.handleToggle}>
-                    <i className="fa fa-file-o"></i>
                     {this.props.data.name}
                 </a>
                     {this.state.active &&

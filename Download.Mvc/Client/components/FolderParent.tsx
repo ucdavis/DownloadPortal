@@ -7,15 +7,16 @@ export class FolderParent extends React.Component<any, any>{
     }
     render() {
         return (
-            <div>
-                { this.props.data.parent &&
-                    <div>
-                        
-                        <Link to={`../${this.props.data.parent.id}/${this.props.data.parent.name}`}>
-                        <i className="fa fa-folder" aria-hidden="true"></i>
-                        ..</Link>
-                    </div>}
-            </div>       
-            );
-    }
+            <tr>
+                <td className="icon">
+                    
+                </td>
+                <td>
+                    <Link to={`../${this.props.data.parent.id}/${this.props.data.parent.name}`}>
+                        ..   
+                    </Link>
+                </td>
+            </tr>
+        );
+    };
 }
