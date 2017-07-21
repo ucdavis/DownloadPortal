@@ -11,8 +11,13 @@ interface IRouteParams {
     id: string
 }
 
+interface ILocationParams {
+    hash: string
+}
+
 export interface IProps {
-    match: match<IRouteParams>
+    match: match<IRouteParams>,
+    location: match<ILocationParams>
 }
 
 export class FolderView extends React.Component<IProps, any> {
@@ -66,12 +71,15 @@ export class FolderView extends React.Component<IProps, any> {
         if (this.state.loading) return <ProgressBar mode="indeterminate" />;
 
         if (this.state.error) return <Error />;
+
+        const highlightHash = this.props.location.hash ? this.props.location.hash.substr(1) : '';
+
         return (
             <div>
                 <SearchBar />
                 <br/>
                 <Breadcrumbs data={this.state.data} />
-                <FolderEntries data={this.state.data} getLicenseID={this.getLicenseID} licenseID={this.state.licenseID} getReadmeID={this.getReadmeID} readmeID = { this.state.readmeID } />
+                <FolderEntries data={this.state.data} getLicenseID={this.getLicenseID} licenseID={this.state.licenseID} getReadmeID={this.getReadmeID} readmeID = { this.state.readmeID } highlightFile={highlightHash} />
             </div>
         );
     }

@@ -47,7 +47,7 @@ export class FolderEntry extends React.Component<any, any>{
         } else if (this.props.entry.type === 'file') {
             // TODO: decide if we want to show readme & license
             return (
-                <tr>
+                <tr className={this.props.highlight && 'warning'}>
                     <td className="icon">
                         <FileIcon fileName={this.props.entry.name} />
                     </td>

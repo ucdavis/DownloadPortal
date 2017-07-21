@@ -8,7 +8,6 @@ export class SearchFileView extends React.Component<any, any>{
     }
 
     render() {
-        console.log(this.props.entry);
         return (
             <li>
                 <Link to={`/folder/${this.props.entry.folderId}/${this.props.entry.folderName}#${this.props.entry.fileId}`}>
