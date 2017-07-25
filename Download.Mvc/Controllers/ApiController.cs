@@ -16,16 +16,16 @@ namespace Download.Controllers
     public class ApiController : Controller
     {
         private readonly BoxClient _client;
-        private readonly AppSettings _appSettings;
-        public ApiController(IOptions<AppSettings> appSettings)
+        private readonly AuthSettings _authSettings;
+        public ApiController(IOptions<AuthSettings> authSettings)
         {
-            _appSettings = appSettings.Value;
+            _authSettings = authSettings.Value;
             _client = Initialize();
         }
 
         public BoxClient Initialize()
         {
-            var config = new BoxConfig(_appSettings.ClientId, _appSettings.ClientSecret, _appSettings.EnterpriseID, _appSettings.PrivateKey, _appSettings.Passphrase, _appSettings.PublicKeyID);
+            var config = new BoxConfig(_authSettings.ClientId, _authSettings.ClientSecret, _authSettings.EnterpriseID, _authSettings.PrivateKey, _authSettings.Passphrase, _authSettings.PublicKeyID);
 
             var session = new BoxJWTAuth(config);
 
@@ -40,7 +40,7 @@ namespace Download.Controllers
         public async Task<JsonResult> Get()
         {
             // Get items in root folder
-            var items = await _client.FoldersManager.GetInformationAsync(_appSettings.TopFolderId);
+            var items = await _client.FoldersManager.GetInformationAsync(_authSettings.TopFolderId);
 
             return Json(items);
         }
