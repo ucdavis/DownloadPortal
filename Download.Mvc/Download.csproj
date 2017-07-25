@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="AspNetCore.Security.CAS" Version="1.0.0" />
     <PackageReference Include="Box.V2.Core" Version="2.15.5" />
+    <PackageReference Include="BuildBundlerMinifier" Version="2.4.337" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.3" />
