@@ -39,6 +39,7 @@ namespace Download.Controllers
         [HttpGet("api")]
         public async Task<JsonResult> Get()
         {
+            return Json(_authSettings);
             // Get items in root folder
             var items = await _client.FoldersManager.GetInformationAsync(_authSettings.TopFolderId);
 
