@@ -4,7 +4,6 @@
     {
         public string ClientId { get; set;}
         public string ClientSecret { get; set; }
-        public string Session { get; set; }
         public string PrivateKey { get; set; }
         public string PublicKeyID { get; set; }
         public string Passphrase { get; set; }
