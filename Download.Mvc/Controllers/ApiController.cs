@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Linq;
+using Box.V2.JWTAuth;
 
 namespace Download.Controllers
 {
@@ -15,7 +16,7 @@ namespace Download.Controllers
     public class ApiController : Controller
     {
         private readonly BoxClient _client;
-        private AppSettings _appSettings;
+        private readonly AppSettings _appSettings;
         public ApiController(IOptions<AppSettings> appSettings)
         {
             _appSettings = appSettings.Value;
@@ -24,9 +25,14 @@ namespace Download.Controllers
 
         public BoxClient Initialize()
         {
-            var config = new BoxConfig(_appSettings.ClientId, _appSettings.ClientSecret, new Uri("http://localhost"));
-            var session = new OAuthSession(_appSettings.Session, "NOT_NEEDED", 3600, "bearer");
-            var client = new BoxClient(config, session);
+            var config = new BoxConfig(_appSettings.ClientId, _appSettings.ClientSecret, _appSettings.EnterpriseID, _appSettings.PrivateKey, _appSettings.Passphrase, _appSettings.PublicKeyID);
+
+            var session = new BoxJWTAuth(config);
+
+            // runs under context of app user for the DownloadUCD user
+            var adminToken = session.AdminToken();
+            var client = session.AdminClient(adminToken);
+
             return client;
         }
 
