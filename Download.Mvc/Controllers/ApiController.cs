@@ -25,22 +25,23 @@ namespace Download.Controllers
 
         public BoxClient Initialize()
         {
-            //var config = new BoxConfig(_authSettings.ClientId, _authSettings.ClientSecret, _authSettings.EnterpriseID, _authSettings.PrivateKey, _authSettings.Passphrase, _authSettings.PublicKeyID);
+            //PK is base64 so convert it
+            var pk = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(_authSettings.PrivateKey));
 
-            //var session = new BoxJWTAuth(config);
+            var config = new BoxConfig(_authSettings.ClientId, _authSettings.ClientSecret, _authSettings.EnterpriseID, pk, _authSettings.Passphrase, _authSettings.PublicKeyID);
 
-            //// runs under context of app user for the DownloadUCD user
-            //var adminToken = session.AdminToken();
-            //var client = session.AdminClient(adminToken);
+            var session = new BoxJWTAuth(config);
 
-            //return client;
-            return new BoxClient(null);
+            // runs under context of app user for the DownloadUCD user
+            var adminToken = session.AdminToken();
+            var client = session.AdminClient(adminToken);
+
+            return client;
         }
 
         [HttpGet("api")]
         public async Task<JsonResult> Get()
         {
-            return Json(_authSettings);
             // Get items in root folder
             var items = await _client.FoldersManager.GetInformationAsync(_authSettings.TopFolderId);
 
