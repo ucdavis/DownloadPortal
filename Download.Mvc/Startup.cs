@@ -34,7 +34,7 @@ namespace Download
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
-            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.Configure<AuthSettings>(Configuration.GetSection("Auth"));
 
             services.AddAuthentication(sharedOptions => sharedOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
 
