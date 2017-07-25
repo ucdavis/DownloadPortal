@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/3c9oqd342v0pjtv0/branch/master?svg=true)](https://ci.appveyor.com/project/UCNETAdmin/downloadportal/branch/master)
+
 # DownloadPortal
 
 Website for the Download project
