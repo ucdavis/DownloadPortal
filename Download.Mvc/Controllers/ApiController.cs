@@ -25,15 +25,16 @@ namespace Download.Controllers
 
         public BoxClient Initialize()
         {
-            var config = new BoxConfig(_authSettings.ClientId, _authSettings.ClientSecret, _authSettings.EnterpriseID, _authSettings.PrivateKey, _authSettings.Passphrase, _authSettings.PublicKeyID);
+            //var config = new BoxConfig(_authSettings.ClientId, _authSettings.ClientSecret, _authSettings.EnterpriseID, _authSettings.PrivateKey, _authSettings.Passphrase, _authSettings.PublicKeyID);
 
-            var session = new BoxJWTAuth(config);
+            //var session = new BoxJWTAuth(config);
 
-            // runs under context of app user for the DownloadUCD user
-            var adminToken = session.AdminToken();
-            var client = session.AdminClient(adminToken);
+            //// runs under context of app user for the DownloadUCD user
+            //var adminToken = session.AdminToken();
+            //var client = session.AdminClient(adminToken);
 
-            return client;
+            //return client;
+            return new BoxClient(null);
         }
 
         [HttpGet("api")]
