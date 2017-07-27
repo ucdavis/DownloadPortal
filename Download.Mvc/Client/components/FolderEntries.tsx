@@ -16,7 +16,7 @@ export class FolderEntries extends React.Component<any, any>{
 
     render() {
         let entryList = this.props.data.item_collection.entries.map((entry, index) =>
-            <FolderEntry key={index} entry={entry} updateReadmeID={this.props.getReadmeID} updateLicenseID={this.props.getLicenseID} licenseID={this.props.licenseID} readmeID={this.props.readmeID} highlight={entry.id === this.props.highlightFile}/>
+            <FolderEntry key={index} entry={entry} updateReadmeID={this.props.getReadmeID} readmeID={this.props.readmeID} highlight={entry.id === this.props.highlightFile}/>
         );
 
         return (
@@ -27,7 +27,7 @@ export class FolderEntries extends React.Component<any, any>{
                         {entryList}
                     </tbody>
                 </table>
-                <FilePreview id={this.props.readmeID} />
+                <FilePreview id={this.props.readmeID} name="README.md" />
             </div>
         );
     }

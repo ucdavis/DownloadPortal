@@ -5,8 +5,10 @@ export class FilePreview extends React.Component<any, any>{
     constructor(props) {
         super(props);
 
+        const name = props.name || 'README.md';
         this.state = {
             link: '',
+            name
         };
     }
     componentDidMount = () => {
@@ -25,9 +27,13 @@ export class FilePreview extends React.Component<any, any>{
             .then(link => this.setState({ link }));
     }
     render() {
+        if (!this.props.id) return null;
         return (
-            <div>
-                <iframe src={this.state.link} height="600px" width="100%" frameBorder="none" ></iframe>
+            <div className="panel panel-default">
+                <div className="panel-heading"><i className="fa fa-file-text-o"/> {this.state.name}</div>
+                <div className="panel-body">
+                    <iframe src={this.state.link} height="600px" width="100%" frameBorder="none" ></iframe>
+                </div>
             </div>
         );
     }
