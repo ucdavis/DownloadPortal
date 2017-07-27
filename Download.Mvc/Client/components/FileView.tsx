@@ -24,7 +24,7 @@ export class FileView extends React.Component<any, any> {
 
     actions = [
         { label: "Cancel", onClick: this.handleToggle },
-        { label: "Agree", onClick: this.downloadLink }
+        { label: "Download", onClick: this.downloadLink }
     ];
 
     render() {
@@ -42,7 +42,7 @@ export class FileView extends React.Component<any, any> {
                             title='Download Agreement'
                             >
                             <h4>{this.props.data.name}</h4>
-                            <FilePreview id={this.props.licenseID} />
+                            <p>This file is provided by UC Davis for the use if its constituents. Please abide by any instructions present concering usage of this file.</p>
                         </Dialog>
                     }
                 {!this.state.active && this.state.download &&
