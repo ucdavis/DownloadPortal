@@ -17,6 +17,7 @@ export const FileIcon = (props: IIconProps) => {
 
     switch (extension) {
         case 'txt':
+        case 'md':
             icon = 'fa-file-text-o';
             break;
         case 'png':

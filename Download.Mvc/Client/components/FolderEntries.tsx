@@ -27,7 +27,7 @@ export class FolderEntries extends React.Component<any, any>{
                         {entryList}
                     </tbody>
                 </table>
-                <FilePreview id={this.props.readmeID} />
+                <FilePreview id={this.props.readmeID} name="README.md" />
             </div>
         );
     }
