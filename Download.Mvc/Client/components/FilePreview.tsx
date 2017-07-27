@@ -27,6 +27,7 @@ export class FilePreview extends React.Component<any, any>{
             .then(link => this.setState({ link }));
     }
     render() {
+        if (!this.props.id) return null;
         return (
             <div className="panel panel-default">
                 <div className="panel-heading"><i className="fa fa-file-text-o"/> {this.state.name}</div>
