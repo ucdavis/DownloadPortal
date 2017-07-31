@@ -34,13 +34,8 @@ export class FolderView extends React.Component<IProps, any> {
                 parent: {
                     id: 0
                 }
-            },
-            readmeID: null
+            }
         };
-    }
-
-    getReadmeID = (id) => {
-        this.setState({ readmeID: id });
     }
 
     componentDidMount = () => {
@@ -74,7 +69,7 @@ export class FolderView extends React.Component<IProps, any> {
                 <SearchBar />
                 <br/>
                 <Breadcrumbs data={this.state.data} />
-                <FolderEntries data={this.state.data} getReadmeID={this.getReadmeID} readmeID = { this.state.readmeID } highlightFile={highlightHash} />
+                <FolderEntries data={this.state.data} highlightFile={highlightHash} />
             </div>
         );
     }

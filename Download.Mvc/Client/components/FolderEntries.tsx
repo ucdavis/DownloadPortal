@@ -3,9 +3,25 @@ import { FolderEntry } from './FolderEntry';
 import { FolderParent } from './FolderParent';
 import { FilePreview } from './FilePreview';
 
+declare var window: any;
+
 export class FolderEntries extends React.Component<any, any>{
     constructor(props) {
         super(props);
+
+        this.state = {
+            entries: [],
+            defaultReadmeId: window.App.defaultReadmeId
+        };
+    }
+    componentDidMount = () => {
+        if (!this.props.data) return null;
+        this.setState({ entries: this.props.data.item_collection.entries.filter(f => f.name === "README.md") });
+    }
+
+    componentWillReceiveProps = (nextProps) => {
+        if (!this.props.data || nextProps.data === this.props.data) return null;
+        this.setState({ entries: nextProps.data.item_collection.entries.filter(f => f.name === "README.md") });
     }
 
     _renderParent = () => {
@@ -16,8 +32,8 @@ export class FolderEntries extends React.Component<any, any>{
 
     render() {
         let entryList = this.props.data.item_collection.entries.map((entry, index) =>
-            <FolderEntry key={index} entry={entry} updateReadmeID={this.props.getReadmeID} readmeID={this.props.readmeID} highlight={entry.id === this.props.highlightFile}/>
-        );
+                <FolderEntry key={index} entry={entry} highlight={entry.id === this.props.highlightFile} />
+            );
 
         return (
             <div>
@@ -27,7 +43,10 @@ export class FolderEntries extends React.Component<any, any>{
                         {entryList}
                     </tbody>
                 </table>
-                <FilePreview id={this.props.readmeID} />
+                {this.state.entries && this.state.entries.length > 0 &&
+                    <FilePreview id={this.state.entries[0].id} />}
+                {this.state.entries && this.state.entries.length < 1 && 
+                    <FilePreview id={this.state.defaultReadmeId} />}
             </div>
         );
     }
