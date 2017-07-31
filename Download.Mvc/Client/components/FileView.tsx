@@ -42,7 +42,7 @@ export class FileView extends React.Component<any, any> {
                             title='Download Agreement'
                             >
                             <h4>{this.props.data.name}</h4>
-                            <FilePreview id={this.props.licenseID} />
+                            <p>Default license information</p>
                         </Dialog>
                     }
                 {!this.state.active && this.state.download &&
