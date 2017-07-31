@@ -9,19 +9,17 @@ export class FolderEntries extends React.Component<any, any>{
     constructor(props) {
         super(props);
 
-        this.state = {
-            entries: [],
-            defaultReadmeId: window.App.defaultReadmeId
-        };
-    }
-    componentDidMount = () => {
-        if (!this.props.data) return null;
-        this.setState({ entries: this.props.data.item_collection.entries.filter(f => f.name === "README.md") });
-    }
+        const readme = this.props.data.item_collection.entries.filter(f => f.name === "README.md");
 
+        this.state = {
+            readme,
+            defaultReadmeId: window.App.defaultReadmeId
+        };    
+    }
+    
     componentWillReceiveProps = (nextProps) => {
         if (!this.props.data || nextProps.data === this.props.data) return null;
-        this.setState({ entries: nextProps.data.item_collection.entries.filter(f => f.name === "README.md") });
+        this.setState({ readme: nextProps.data.item_collection.entries.filter(f => f.name === "README.md") });
     }
 
     _renderParent = () => {
@@ -43,9 +41,9 @@ export class FolderEntries extends React.Component<any, any>{
                         {entryList}
                     </tbody>
                 </table>
-                {this.state.entries && this.state.entries.length > 0 &&
-                    <FilePreview id={this.state.entries[0].id} />}
-                {this.state.entries && this.state.entries.length < 1 && 
+                {this.state.readme && this.state.readme.length > 0 &&
+                    <FilePreview id={this.state.readme[0].id} />}
+                {this.state.readme && this.state.readme.length < 1 && this.state.defaultReadmeId &&
                     <FilePreview id={this.state.defaultReadmeId} />}
             </div>
         );
