@@ -8,28 +8,6 @@ export class FolderEntry extends React.Component<any, any>{
         super(props);
     }
 
-    componentWillMount = () => {
-        if (this.props.entry.name === 'README.md')
-        {
-            this.props.updateReadmeID(this.props.entry.id);
-        }
-        if (this.props.entry.name === 'LICENSE.txt')
-        {
-            this.props.updateLicenseID(this.props.entry.id);
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.entry.id !== nextProps.entry.id) {
-            if (nextProps.entry.name === 'README.md') {
-                this.props.updateReadmeID(nextProps.entry.id);
-            }
-            if (nextProps.entry.name === 'LICENSE.txt') {
-                this.props.updateLicenseID(nextProps.entry.id);
-            }
-        }
-    }
-
     render() {
         if (this.props.entry.type === 'folder') {
             return (
@@ -52,7 +30,7 @@ export class FolderEntry extends React.Component<any, any>{
                         <FileIcon fileName={this.props.entry.name} />
                     </td>
                     <td>
-                        <FileView data={this.props.entry} licenseID={this.props.licenseID} readmeID={this.props.readmeID}/>
+                        <FileView data={this.props.entry} readmeID={this.props.readmeID}/>
                     </td>
                 </tr>
             );
