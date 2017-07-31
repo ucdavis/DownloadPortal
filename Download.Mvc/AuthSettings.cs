@@ -9,6 +9,7 @@
         public string Passphrase { get; set; }
         public string EnterpriseID { get; set; }
         public string TopFolderId { get; set; }
+        public string DefaultReadmeID { get; set; }
         
     }
 }

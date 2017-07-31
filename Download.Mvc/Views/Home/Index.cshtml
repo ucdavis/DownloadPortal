@@ -1,3 +1,5 @@
+@model Download.AuthSettings
+
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -5,6 +7,11 @@
 <div id="react-app">Loading...</div>
 
 @section scripts {
+    <script>
+        App = {};
+        App.defaultFolderId = @Model.TopFolderId;
+        App.defaultReadmeId = @Model.DefaultReadmeID;
+    </script>
     <script src="~/dist/react.js" asp-append-version="true"></script>
     <script src="~/dist/boot.js" asp-append-version="true"></script>
 }
