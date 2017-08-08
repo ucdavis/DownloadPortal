@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace Download.Controllers
 {
@@ -18,6 +19,15 @@ namespace Download.Controllers
             _httpClient = new HttpClient();
         }
 
+        [HttpGet("titlecodes/{userId}")]
+        public async Task<string> GetTitleCodes(string userId)
+        {
+            var iamId = await GetIamId(userId);
+            var result = await GetCodes(iamId);
+            return result;
+
+        }
+
         [HttpGet("titleCodes/iam/{userId}")]
         public async Task<string> GetIamId(string userId)
         {
@@ -25,7 +35,8 @@ namespace Download.Controllers
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
             var contents = await response.Content.ReadAsStringAsync();
-            return contents;
+            dynamic test = JsonConvert.DeserializeObject(contents);
+            return test.responseData.results[0].iamId;
         }
 
         [HttpGet("titleCodes/codes/{iamId}")]
@@ -35,7 +46,8 @@ namespace Download.Controllers
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
             var contents = await response.Content.ReadAsStringAsync();
-            return contents;
+            dynamic test = JsonConvert.DeserializeObject(contents);
+            return test.responseData.results[0].titleCode;
         }
     }
 }
