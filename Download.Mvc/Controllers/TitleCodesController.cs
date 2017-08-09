@@ -6,17 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Net.Http;
 using Newtonsoft.Json;
+using System.Net;
+using Download;
 
 namespace Download.Controllers
 {
     public class TitleCodesController : Controller
     {
         private readonly AuthSettings _authSettings;
-        private readonly HttpClient _httpClient;
         public TitleCodesController(IOptions<AuthSettings> authSettings)
         {
             _authSettings = authSettings.Value;
-            _httpClient = new HttpClient();
         }
 
         [HttpGet("titlecodes/{userId}")]
@@ -24,30 +24,44 @@ namespace Download.Controllers
         {
             var iamId = await GetIamId(userId);
             var result = await GetCodes(iamId);
-            return result;
+            if(result)
+            {
+                return "Success";
+            }
+            else
+            {
+                return "Fail";
+            }
 
         }
 
         [HttpGet("titleCodes/iam/{userId}")]
         public async Task<string> GetIamId(string userId)
         {
-            var url = "https://iet-ws.ucdavis.edu/api/iam/people/prikerbacct/search?key=" + _authSettings.TitleCodesKey + "&v=1.0&userId=" + userId;
-            var response = await _httpClient.GetAsync(url);
-            response.EnsureSuccessStatusCode();
-            var contents = await response.Content.ReadAsStringAsync();
-            dynamic test = JsonConvert.DeserializeObject(contents);
-            return test.responseData.results[0].iamId;
+            using (var client = new HttpClient())
+            {
+                var url = "https://iet-ws.ucdavis.edu/api/iam/people/prikerbacct/search?key=" + _authSettings.TitleCodesKey + "&v=1.0&userId=" + userId;
+                var response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                var contents = await response.Content.ReadAsStringAsync();
+                dynamic test = JsonConvert.DeserializeObject(contents);
+                return test.responseData.results[0].iamId;
+            }
         }
 
         [HttpGet("titleCodes/codes/{iamId}")]
-        public async Task<string> GetCodes(string iamId)
+        public async Task<bool> GetCodes(string iamId)
         {
-            var url = "https://iet-ws.ucdavis.edu/api/iam/associations/pps/" + iamId + "?key=" + _authSettings.TitleCodesKey + "&v=1.0";
-            var response = await _httpClient.GetAsync(url);
-            response.EnsureSuccessStatusCode();
-            var contents = await response.Content.ReadAsStringAsync();
-            dynamic test = JsonConvert.DeserializeObject(contents);
-            return test.responseData.results[0].titleCode;
+            using (var client = new HttpClient())
+            {
+                var url = "https://iet-ws.ucdavis.edu/api/iam/associations/pps/" + iamId + "?key=" + _authSettings.TitleCodesKey + "&v=1.0";
+                var response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                var contents = await response.Content.ReadAsStringAsync();
+                RootObject test = JsonConvert.DeserializeObject<RootObject>(contents);
+                var titleCodes = test.responseData.results.Any(x => x.positionType == "Regular/Career");
+                return titleCodes;
+            }
         }
     }
 }
