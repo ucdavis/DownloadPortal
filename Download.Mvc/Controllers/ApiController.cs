@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Linq;
 using Box.V2.JWTAuth;
+using Download.Services;
 
 namespace Download.Controllers
 {
@@ -17,9 +18,11 @@ namespace Download.Controllers
     {
         private readonly BoxClient _client;
         private readonly AuthSettings _authSettings;
-        public ApiController(IOptions<AuthSettings> authSettings)
+        private readonly ITitleCodesService _titleCodeService;
+        public ApiController(IOptions<AuthSettings> authSettings, ITitleCodesService titleCodeService)
         {
             _authSettings = authSettings.Value;
+            _titleCodeService = titleCodeService;
             _client = Initialize();
         }
 
@@ -38,10 +41,11 @@ namespace Download.Controllers
 
             return client;
         }
-
         [HttpGet("api")]
         public async Task<JsonResult> Get()
         {
+            await _titleCodeService.GetTitleCodes(User.Identity.Name);
+
             // Get items in root folder
             var items = await _client.FoldersManager.GetInformationAsync(_authSettings.TopFolderId);
 
@@ -51,6 +55,8 @@ namespace Download.Controllers
         [HttpGet("api/folder/{id}")]
         public async Task<JsonResult> GetFolderInfo(string id)
         {
+            await _titleCodeService.GetTitleCodes(User.Identity.Name);
+
             var items = await _client.FoldersManager.GetInformationAsync(id);
 
             return Json(items);
@@ -67,14 +73,17 @@ namespace Download.Controllers
         [HttpGet("api/downloadFile/{id}")]
         public async Task<JsonResult> DownloadFile(string id)
         {
+            await _titleCodeService.GetTitleCodes(User.Identity.Name);
+
             var items = await _client.FilesManager.GetDownloadUriAsync(id);
 
             return Json(items);
         }
-
         [HttpGet("api/previewFile/{id}")]
         public async Task<JsonResult> PreviewFile(string id)
         {
+            await _titleCodeService.GetTitleCodes(User.Identity.Name);
+
             var items = await _client.FilesManager.GetPreviewLinkAsync(id);
 
             return Json(items);
@@ -83,6 +92,8 @@ namespace Download.Controllers
         [HttpGet("api/search/{query}")]
         public async Task<JsonResult> Search(string query)
         {
+            await _titleCodeService.GetTitleCodes(User.Identity.Name);
+
             List<string> fileExtensionsList = new List<string>();
             fileExtensionsList.Add("md");
             List<string> contentTypeList = new List<string>();
