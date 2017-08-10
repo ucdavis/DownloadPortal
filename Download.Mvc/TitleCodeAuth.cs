@@ -8,9 +8,10 @@ using Download.Services;
 using Microsoft.Extensions.Options;
 using Download.Controllers;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Download
-{
+{ 
     public class TitleCodeAuth : ActionFilterAttribute
     {
         private readonly ITitleCodesService _titleCodesService;
@@ -25,9 +26,10 @@ namespace Download
         public async override void OnActionExecuting(ActionExecutingContext context)
         {
             var valid = await _titleCodesService.GetTitleCodes(context.HttpContext.User.Identity.Name);
-            if(!valid)
+            if (!valid)
             {
-                throw new Exception("You do not have permissions to access this");
+                context.Result = new UnauthorizedResult();
+                await context.Result.ExecuteResultAsync(context);
             }
         }
     }

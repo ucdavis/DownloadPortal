@@ -27,6 +27,7 @@ namespace Download.Services
         {
             var iamId = await GetIamId(userId);
             var result = await GetCodes(iamId);
+            //var check = result.responseData.results.Any(x => x.positionType == "Regular/Career");
             var check = result.responseData.results.Any(x => x.positionType == "Casual/RESTRICTED-Students");
             return check;
             
