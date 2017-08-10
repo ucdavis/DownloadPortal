@@ -14,6 +14,7 @@ using Download.Services;
 namespace Download.Controllers
 {
     [Authorize]
+    [ServiceFilter(typeof(TitleCodeAuth))]
     public class ApiController : Controller
     {
         private readonly BoxClient _client;
@@ -42,9 +43,10 @@ namespace Download.Controllers
             return client;
         }
         [HttpGet("api")]
+        //[ServiceFilter(typeof(TitleCodeAuth))]
         public async Task<JsonResult> Get()
         {
-            await _titleCodeService.GetTitleCodes(User.Identity.Name);
+            //CheckTitleCode();
 
             // Get items in root folder
             var items = await _client.FoldersManager.GetInformationAsync(_authSettings.TopFolderId);
@@ -53,9 +55,10 @@ namespace Download.Controllers
         }
 
         [HttpGet("api/folder/{id}")]
+        //[ServiceFilter(typeof(TitleCodeAuth))]
         public async Task<JsonResult> GetFolderInfo(string id)
         {
-            await _titleCodeService.GetTitleCodes(User.Identity.Name);
+            //CheckTitleCode();
 
             var items = await _client.FoldersManager.GetInformationAsync(id);
 
@@ -63,26 +66,31 @@ namespace Download.Controllers
         }
 
         [HttpGet("api/file/{id}")]
+        //[ServiceFilter(typeof(TitleCodeAuth))]
         public async Task<JsonResult> GetFileInfo(string id)
         {
+            //CheckTitleCode();
+
             var items = await _client.FilesManager.GetInformationAsync(id);
 
             return Json(items);
         }
 
         [HttpGet("api/downloadFile/{id}")]
+        //[ServiceFilter(typeof(TitleCodeAuth))]
         public async Task<JsonResult> DownloadFile(string id)
         {
-            await _titleCodeService.GetTitleCodes(User.Identity.Name);
+            //CheckTitleCode();
 
             var items = await _client.FilesManager.GetDownloadUriAsync(id);
 
             return Json(items);
         }
         [HttpGet("api/previewFile/{id}")]
+        //[ServiceFilter(typeof(TitleCodeAuth))]
         public async Task<JsonResult> PreviewFile(string id)
         {
-            await _titleCodeService.GetTitleCodes(User.Identity.Name);
+            //CheckTitleCode();
 
             var items = await _client.FilesManager.GetPreviewLinkAsync(id);
 
@@ -90,9 +98,10 @@ namespace Download.Controllers
         }
 
         [HttpGet("api/search/{query}")]
+        //[ServiceFilter(typeof(TitleCodeAuth))]
         public async Task<JsonResult> Search(string query)
         {
-            await _titleCodeService.GetTitleCodes(User.Identity.Name);
+            //CheckTitleCode();
 
             List<string> fileExtensionsList = new List<string>();
             fileExtensionsList.Add("md");
@@ -118,6 +127,13 @@ namespace Download.Controllers
             return View();
         }
 
+        public async void CheckTitleCode()
+        {
+            var check = await _titleCodeService.GetTitleCodes(User.Identity.Name);
+            if (!check)
+                throw new Exception("You do not have permission to access this page");
+
+        }
         public class FolderContainer {
             public string Id { get; set; }
             public string Name { get; set; }

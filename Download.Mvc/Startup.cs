@@ -43,6 +43,7 @@ namespace Download
             services.AddMvc();
 
             services.AddSingleton<ITitleCodesService, TitleCodesService>();
+            services.AddSingleton<TitleCodeAuth>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

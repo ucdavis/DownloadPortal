@@ -13,7 +13,7 @@ namespace Download.Services
 {
     public interface ITitleCodesService
     {
-        Task GetTitleCodes(string userId);
+        Task<bool> GetTitleCodes(string userId);
     }
     public class TitleCodesService : ITitleCodesService
     {
@@ -23,25 +23,21 @@ namespace Download.Services
             _authSettings = authSettings.Value;
         }
 
-        public Task GetTitleCodes(string userId)
-        {
-            return GenerateCodes(userId);
-        }
-
-        private async Task GenerateCodes(string userId)
+        public async Task<bool> GetTitleCodes(string userId)
         {
             var iamId = await GetIamId(userId);
             var result = await GetCodes(iamId);
-            var check = result.responseData.results.Any(x => x.positionType == "Regular/Career");
-            if (!check)
-                throw new NotImplementedException();
+            var check = result.responseData.results.Any(x => x.positionType == "Casual/RESTRICTED-Students");
+            return check;
+            
         }
 
         private async Task<string> GetIamId(string userId)
         {
             using (var client = new HttpClient())
             {
-                var url = "https://iet-ws.ucdavis.edu/api/iam/people/prikerbacct/search?key=" + _authSettings.TitleCodesKey + "&v=1.0&userId=" + userId;
+                client.BaseAddress = new Uri("https://iet-ws.ucdavis.edu/api/iam/people/prikerbacct/");
+                var url = string.Format("search?key={0}&v=1.0&userId={1}", _authSettings.TitleCodesKey, userId);
                 var response = await client.GetAsync(url);
                 response.EnsureSuccessStatusCode();
                 var contents = await response.Content.ReadAsStringAsync();
@@ -54,12 +50,12 @@ namespace Download.Services
         {
             using (var client = new HttpClient())
             {
-                var url = "https://iet-ws.ucdavis.edu/api/iam/associations/pps/" + iamId + "?key=" + _authSettings.TitleCodesKey + "&v=1.0";
+                client.BaseAddress = new Uri("https://iet-ws.ucdavis.edu/api/iam/associations/pps/");
+                var url = string.Format("{0}?key={1}&v=1.0", iamId, _authSettings.TitleCodesKey);
                 var response = await client.GetAsync(url);
                 response.EnsureSuccessStatusCode();
                 var contents = await response.Content.ReadAsStringAsync();
                 RootObject test = JsonConvert.DeserializeObject<RootObject>(contents);
-                //var titleCodes = test.responseData.results.Any(x => x.positionType == "Regular/Career");
                 return test;
             }
         }
