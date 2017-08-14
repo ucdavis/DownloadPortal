@@ -7,8 +7,7 @@ import { Link } from 'react-router-dom';
 import { SearchBar } from './SearchBar';
 import { ErrorView } from './ErrorView';
 import ProgressBar from 'react-toolbox/lib/progress_bar';
-
-declare var Promise: any;
+import { checkStatus } from './ApiUtil';
 
 export class Search extends React.Component<IProps, any> {
     constructor(props) {
@@ -21,21 +20,11 @@ export class Search extends React.Component<IProps, any> {
         };
     }
 
-    checkStatus(response) {
-        // The Promise returned from fetch() won’t reject on HTTP error statuses
-        // So instead lets check for good statuses and reject the rest
-        if (response.status >= 200 && response.status < 300) {
-            return Promise.resolve(response);
-        } else {
-            return Promise.reject(response);
-        }
-    }
-
     componentDidMount = () => {
         if (!this.props.match.params.query)
             return;
         fetch(`/api/Search/${this.props.match.params.query}`, { credentials: 'same-origin' })
-            .then(this.checkStatus)
+            .then(checkStatus)
             .then(response => response.json())
             .then(items => this.setState({ items, loading: false }))
             .catch(e => this.setState({ error: e.status, loading: false }));
@@ -46,7 +35,7 @@ export class Search extends React.Component<IProps, any> {
             return;
         this.setState({ loading: true });
         fetch(`/api/Search/${nextProps.match.params.query}`, { credentials: 'same-origin' })
-            .then(this.checkStatus)
+            .then(checkStatus)
             .then(response => response.json())
             .then(items => this.setState({ items, loading: false }))
             .catch(e => this.setState({ error: e.status, loading: false }));

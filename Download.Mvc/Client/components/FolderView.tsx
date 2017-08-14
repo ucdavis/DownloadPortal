@@ -6,8 +6,7 @@ import { SearchBar } from './SearchBar';
 import { Breadcrumbs } from './Breadcrumbs';
 import ProgressBar from 'react-toolbox/lib/progress_bar';
 import { ErrorView } from './ErrorView';
-
-declare var Promise: any;
+import { checkStatus } from './ApiUtil';
 
 interface IRouteParams {
     id: string
@@ -41,20 +40,10 @@ export class FolderView extends React.Component<IProps, any> {
         };
     }
 
-    checkStatus(response) {
-        // The Promise returned from fetch() won’t reject on HTTP error statuses
-        // So instead lets check for good statuses and reject the rest
-        if (response.status >= 200 && response.status < 300) {
-            return Promise.resolve(response);
-        } else {
-            return Promise.reject(response);
-        }
-    }
-
     componentDidMount = () => {
         // go grab the folder info we are looking at
         fetch(`/api/folder/${this.props.match.params.id}`, { credentials: 'same-origin' })
-            .then(this.checkStatus)
+            .then(checkStatus)
             .then(response => response.json())
             .then(data => this.setState({ data, loading: false }))
             .catch(e => this.setState({ error: e.status, loading: false }));
@@ -66,7 +55,7 @@ export class FolderView extends React.Component<IProps, any> {
         this.setState({ loading: true });
 
         fetch(`/api/folder/${nextProps.match.params.id}`, { credentials: 'same-origin' })
-            .then(this.checkStatus)
+            .then(checkStatus)
             .then(response => response.json())
             .then(data => this.setState({ data, loading: false }))
             .catch(e => this.setState({ error: e.status, loading: false }));
