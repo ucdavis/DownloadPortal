@@ -59,7 +59,7 @@ export class Search extends React.Component<IProps, any> {
                 {this.props.match.params.query &&
                     <h3>Searching for: {decodeURIComponent(this.props.match.params.query)}</h3>}
                 {!this.props.match.params.query &&
-                    <h3>Search for: </h3>}
+                    <h3>Searching for: </h3>}
                 <p>
                     <Link to='/folder/27707355823/Download'>
                         <i className="fa fa-level-up" aria-hidden="true"></i> Return Home
