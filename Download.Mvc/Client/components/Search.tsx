@@ -56,7 +56,10 @@ export class Search extends React.Component<IProps, any> {
         return (
             <div>
                 <SearchBar />
-                <h3>Searching for: {decodeURIComponent(this.props.match.params.query)}</h3>
+                {this.props.match.params.query &&
+                    <h3>Searching for: {decodeURIComponent(this.props.match.params.query)}</h3>}
+                {!this.props.match.params.query &&
+                    <h3>Search for: </h3>}
                 <p>
                     <Link to='/folder/27707355823/Download'>
                         <i className="fa fa-level-up" aria-hidden="true"></i> Return Home
