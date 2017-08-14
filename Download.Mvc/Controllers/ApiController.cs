@@ -43,11 +43,8 @@ namespace Download.Controllers
             return client;
         }
         [HttpGet("api")]
-        //[ServiceFilter(typeof(TitleCodeAuth))]
         public async Task<JsonResult> Get()
         {
-            //CheckTitleCode();
-
             // Get items in root folder
             var items = await _client.FoldersManager.GetInformationAsync(_authSettings.TopFolderId);
 
@@ -55,54 +52,39 @@ namespace Download.Controllers
         }
 
         [HttpGet("api/folder/{id}")]
-        //[ServiceFilter(typeof(TitleCodeAuth))]
         public async Task<JsonResult> GetFolderInfo(string id)
         {
-            //CheckTitleCode();
-
             var items = await _client.FoldersManager.GetInformationAsync(id);
 
             return Json(items);
         }
 
         [HttpGet("api/file/{id}")]
-        //[ServiceFilter(typeof(TitleCodeAuth))]
         public async Task<JsonResult> GetFileInfo(string id)
         {
-            //CheckTitleCode();
-
             var items = await _client.FilesManager.GetInformationAsync(id);
 
             return Json(items);
         }
 
         [HttpGet("api/downloadFile/{id}")]
-        //[ServiceFilter(typeof(TitleCodeAuth))]
         public async Task<JsonResult> DownloadFile(string id)
         {
-            //CheckTitleCode();
-
             var items = await _client.FilesManager.GetDownloadUriAsync(id);
 
             return Json(items);
         }
         [HttpGet("api/previewFile/{id}")]
-        //[ServiceFilter(typeof(TitleCodeAuth))]
         public async Task<JsonResult> PreviewFile(string id)
         {
-            //CheckTitleCode();
-
             var items = await _client.FilesManager.GetPreviewLinkAsync(id);
 
             return Json(items);
         }
 
         [HttpGet("api/search/{query}")]
-        //[ServiceFilter(typeof(TitleCodeAuth))]
         public async Task<JsonResult> Search(string query)
         {
-            //CheckTitleCode();
-
             List<string> fileExtensionsList = new List<string>();
             fileExtensionsList.Add("md");
             List<string> contentTypeList = new List<string>();
