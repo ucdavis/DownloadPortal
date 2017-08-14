@@ -4,8 +4,9 @@ import 'isomorphic-fetch';
 import { FolderEntries } from './FolderEntries';
 import { SearchBar } from './SearchBar';
 import { Breadcrumbs } from './Breadcrumbs';
-import { Error } from './Error';
 import ProgressBar from 'react-toolbox/lib/progress_bar';
+import { ErrorView } from './ErrorView';
+import { checkStatus } from './ApiUtil';
 
 interface IRouteParams {
     id: string
@@ -26,6 +27,7 @@ export class FolderView extends React.Component<IProps, any> {
 
         this.state = {
             loading: true,
+            error: null,
             data: {
                 item_collection: {
                     total_count: 0,
@@ -41,9 +43,10 @@ export class FolderView extends React.Component<IProps, any> {
     componentDidMount = () => {
         // go grab the folder info we are looking at
         fetch(`/api/folder/${this.props.match.params.id}`, { credentials: 'same-origin' })
+            .then(checkStatus)
             .then(response => response.json())
             .then(data => this.setState({ data, loading: false }))
-            .catch(_ => this.setState({ error: true, loading: false }));
+            .catch(e => this.setState({ error: e.status, loading: false }));
     }
 
     componentWillReceiveProps(nextProps) {
@@ -52,16 +55,18 @@ export class FolderView extends React.Component<IProps, any> {
         this.setState({ loading: true });
 
         fetch(`/api/folder/${nextProps.match.params.id}`, { credentials: 'same-origin' })
+            .then(checkStatus)
             .then(response => response.json())
             .then(data => this.setState({ data, loading: false }))
-            .catch(_ => this.setState({ error: true, loading: false }));
+            .catch(e => this.setState({ error: e.status, loading: false }));
     }
 
     render() {
         if (this.state.loading) return <ProgressBar mode="indeterminate" />;
 
-        if (this.state.error) return <Error />;
-
+        if (this.state.error) {
+            return <ErrorView status={this.state.error} />
+        }
         const highlightHash = this.props.location.hash ? this.props.location.hash.substr(1) : '';
 
         return (

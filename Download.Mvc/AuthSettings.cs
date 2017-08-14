@@ -10,6 +10,6 @@
         public string EnterpriseID { get; set; }
         public string TopFolderId { get; set; }
         public string DefaultReadmeID { get; set; }
-        
+        public string TitleCodesKey { get; set; }
     }
 }

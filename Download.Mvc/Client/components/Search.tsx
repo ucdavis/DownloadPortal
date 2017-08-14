@@ -5,6 +5,9 @@ import { IProps } from './FolderView';
 import { SearchEntries } from './SearchEntries';
 import { Link } from 'react-router-dom';
 import { SearchBar } from './SearchBar';
+import { ErrorView } from './ErrorView';
+import ProgressBar from 'react-toolbox/lib/progress_bar';
+import { checkStatus } from './ApiUtil';
 
 export class Search extends React.Component<IProps, any> {
     constructor(props) {
@@ -12,15 +15,19 @@ export class Search extends React.Component<IProps, any> {
 
         this.state = {
             items: '',
-            loading: true
+            loading: true,
+            error: null
         };
     }
+
     componentDidMount = () => {
         if (!this.props.match.params.query)
             return;
         fetch(`/api/Search/${this.props.match.params.query}`, { credentials: 'same-origin' })
+            .then(checkStatus)
             .then(response => response.json())
-            .then(items => this.setState({ items, loading: false }));
+            .then(items => this.setState({ items, loading: false }))
+            .catch(e => this.setState({ error: e.status, loading: false }));
     }
 
     componentWillReceiveProps(nextProps) {
@@ -28,11 +35,17 @@ export class Search extends React.Component<IProps, any> {
             return;
         this.setState({ loading: true });
         fetch(`/api/Search/${nextProps.match.params.query}`, { credentials: 'same-origin' })
+            .then(checkStatus)
             .then(response => response.json())
-            .then(items => this.setState({ items, loading: false }));
+            .then(items => this.setState({ items, loading: false }))
+            .catch(e => this.setState({ error: e.status, loading: false }));
     }
 
     render() {
+        if (this.state.loading) return <ProgressBar mode="indeterminate" />;
+
+        if (this.state.error)
+            return <ErrorView status={this.state.error} />
         return (
             <div>
                 <SearchBar />
@@ -42,11 +55,7 @@ export class Search extends React.Component<IProps, any> {
                         <i className="fa fa-level-up" aria-hidden="true"></i> Return Home
                     </Link>
                 </p>
-                {this.state.items && !this.state.loading &&
-                    <SearchEntries items={this.state.items} />
-                }
-                {this.state.loading && 
-                    <p>Loading results . . . </p>}
+                <SearchEntries items={this.state.items} />
             </div>
         );
     }

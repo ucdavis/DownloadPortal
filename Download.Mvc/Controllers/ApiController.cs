@@ -9,17 +9,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Linq;
 using Box.V2.JWTAuth;
+using Download.Services;
 
 namespace Download.Controllers
 {
     [Authorize]
+    [ServiceFilter(typeof(TitleCodeAuth))]
     public class ApiController : Controller
     {
         private readonly BoxClient _client;
         private readonly AuthSettings _authSettings;
-        public ApiController(IOptions<AuthSettings> authSettings)
+        private readonly ITitleCodesService _titleCodeService;
+        public ApiController(IOptions<AuthSettings> authSettings, ITitleCodesService titleCodeService)
         {
             _authSettings = authSettings.Value;
+            _titleCodeService = titleCodeService;
             _client = Initialize();
         }
 
@@ -38,7 +42,6 @@ namespace Download.Controllers
 
             return client;
         }
-
         [HttpGet("api")]
         public async Task<JsonResult> Get()
         {
@@ -71,7 +74,6 @@ namespace Download.Controllers
 
             return Json(items);
         }
-
         [HttpGet("api/previewFile/{id}")]
         public async Task<JsonResult> PreviewFile(string id)
         {
@@ -107,6 +109,13 @@ namespace Download.Controllers
             return View();
         }
 
+        public async void CheckTitleCode()
+        {
+            var check = await _titleCodeService.GetTitleCodes(User.Identity.Name);
+            if (!check)
+                throw new Exception("You do not have permission to access this page");
+
+        }
         public class FolderContainer {
             public string Id { get; set; }
             public string Name { get; set; }
