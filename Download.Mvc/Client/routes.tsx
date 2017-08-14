@@ -8,5 +8,5 @@ import { Search } from './components/Search';
 export const routes = <Layout>
     <Route exact path='/' component={Home} />
     <Route path='/folder/:id/' component={FolderView} />
-    <Route path='/search/:query' component={Search} />
+    <Route path='/search/:query?' component={Search} />
 </Layout>;

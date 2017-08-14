@@ -22,7 +22,10 @@ export class Search extends React.Component<IProps, any> {
 
     componentDidMount = () => {
         if (!this.props.match.params.query)
+        {
+            this.setState({ loading: false });
             return;
+        }
         fetch(`/api/Search/${this.props.match.params.query}`, { credentials: 'same-origin' })
             .then(checkStatus)
             .then(response => response.json())
@@ -31,6 +34,10 @@ export class Search extends React.Component<IProps, any> {
     }
 
     componentWillReceiveProps(nextProps) {
+        if (!nextProps.match.params.query) {
+            this.setState({ loading: false });
+            return;
+        }
         if (decodeURIComponent(nextProps.match.params.query) === decodeURIComponent(this.props.match.params.query))
             return;
         this.setState({ loading: true });
@@ -49,7 +56,10 @@ export class Search extends React.Component<IProps, any> {
         return (
             <div>
                 <SearchBar />
-                <h3>Searching for: {decodeURIComponent(this.props.match.params.query)}</h3>
+                {this.props.match.params.query &&
+                    <h3>Searching for: {decodeURIComponent(this.props.match.params.query)}</h3>}
+                {!this.props.match.params.query &&
+                    <h3>Searching for: </h3>}
                 <p>
                     <Link to='/folder/27707355823/Download'>
                         <i className="fa fa-level-up" aria-hidden="true"></i> Return Home
