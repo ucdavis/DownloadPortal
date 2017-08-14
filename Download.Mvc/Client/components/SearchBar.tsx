@@ -20,9 +20,14 @@ export class SearchBar extends React.Component<any, any>{
                     <div className="col-lg-6 pull-right">
                         <div className="input-group">
                             <input type="text" className="form-control" value={this.state.query} placeholder="Search . . ." onChange={this.handleChange} />
-                            <span className="input-group-btn">
-                                <button type="submit" className="btn btn-default">Go!</button>
-                            </span>
+                                {this.state.query &&
+                                    <span className="input-group-btn">
+                                        <button type="submit" className="btn btn-default">Go!</button>
+                                    </span>}
+                                {!this.state.query &&
+                                    <span className="input-group-btn">
+                                        <button type="submit" className="btn btn-default" disabled>Go!</button>
+                                    </span>}
                         </div>
                     </div>
                 </div>
