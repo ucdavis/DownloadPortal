@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using System.Linq;
 using Box.V2.JWTAuth;
 using Download.Services;
+using System.Net.Http;
 
 namespace Download.Controllers
 {
@@ -103,6 +104,20 @@ namespace Download.Controllers
             
             return Json(grouped);
         }
+
+        [HttpGet("api/campustest")]
+        public async Task<string> CampusTest()
+        {
+            using (var client = new HttpClient())
+            {
+                var url = "https://iet-ws-test.ucdavis.edu/api/directory/search?&sn=Hendricks&key=apiKeyForRick&v=1";
+                var response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                var contents = await response.Content.ReadAsStringAsync();
+                return contents;
+            }
+        }
+    
 
         public IActionResult Error()
         {
