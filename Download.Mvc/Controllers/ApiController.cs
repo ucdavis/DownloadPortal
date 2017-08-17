@@ -15,7 +15,6 @@ using System.Net.Http;
 namespace Download.Controllers
 {
     [Authorize]
-    [ServiceFilter(typeof(TitleCodeAuth))]
     public class ApiController : Controller
     {
         private readonly BoxClient _client;
@@ -44,6 +43,7 @@ namespace Download.Controllers
             return client;
         }
         [HttpGet("api")]
+        [ServiceFilter(typeof(TitleCodeAuth))]
         public async Task<JsonResult> Get()
         {
             // Get items in root folder
@@ -53,6 +53,7 @@ namespace Download.Controllers
         }
 
         [HttpGet("api/folder/{id}")]
+        [ServiceFilter(typeof(TitleCodeAuth))]
         public async Task<JsonResult> GetFolderInfo(string id)
         {
             var items = await _client.FoldersManager.GetInformationAsync(id);
@@ -61,6 +62,7 @@ namespace Download.Controllers
         }
 
         [HttpGet("api/file/{id}")]
+        [ServiceFilter(typeof(TitleCodeAuth))]
         public async Task<JsonResult> GetFileInfo(string id)
         {
             var items = await _client.FilesManager.GetInformationAsync(id);
@@ -69,6 +71,7 @@ namespace Download.Controllers
         }
 
         [HttpGet("api/downloadFile/{id}")]
+        [ServiceFilter(typeof(TitleCodeAuth))]
         public async Task<JsonResult> DownloadFile(string id)
         {
             var items = await _client.FilesManager.GetDownloadUriAsync(id);
@@ -76,6 +79,7 @@ namespace Download.Controllers
             return Json(items);
         }
         [HttpGet("api/previewFile/{id}")]
+        [ServiceFilter(typeof(TitleCodeAuth))]
         public async Task<JsonResult> PreviewFile(string id)
         {
             var items = await _client.FilesManager.GetPreviewLinkAsync(id);
@@ -84,6 +88,7 @@ namespace Download.Controllers
         }
 
         [HttpGet("api/search/{query}")]
+        [ServiceFilter(typeof(TitleCodeAuth))]
         public async Task<JsonResult> Search(string query)
         {
             List<string> fileExtensionsList = new List<string>();
