@@ -42,7 +42,8 @@ export class FileView extends React.Component<any, any> {
                             title='Download Agreement'
                             >
                             <h4>{this.props.data.name}</h4>
-                            <p>Default license information</p>
+                            <p>The software contained on this site is provided without license information – obtaining a valid license for the software is your responsibility.</p>
+                            <p>For license questions you may find <a href="http://itcatalog.ucdavis.edu/service/software-license-coordination">http://itcatalog.ucdavis.edu/service/software-license-coordination</a> to be useful.</p>
                         </Dialog>
                     }
                 {!this.state.active && this.state.download &&
