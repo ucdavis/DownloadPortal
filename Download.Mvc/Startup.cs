@@ -7,7 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Download.Services;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Download
 {
@@ -28,11 +27,9 @@ namespace Download
             builder.AddEnvironmentVariables();
 
             Configuration = builder.Build();
-            HostingEnvironment = env;
         }
 
         public IConfigurationRoot Configuration { get; }
-        public IHostingEnvironment HostingEnvironment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -43,13 +40,7 @@ namespace Download
             services.AddAuthentication(sharedOptions => sharedOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
 
             // Add framework services.
-            services.AddMvc(options =>
-            {
-                if (!HostingEnvironment.IsDevelopment())
-                {
-                    options.Filters.Add(new RequireHttpsAttribute());
-                }
-            });
+            services.AddMvc();
 
             services.AddSingleton<ITitleCodesService, TitleCodesService>();
             services.AddSingleton<TitleCodeAuth>();
