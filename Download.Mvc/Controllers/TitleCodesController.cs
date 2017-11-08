@@ -76,6 +76,20 @@ namespace Download.Controllers
                 return test.responseData.results[0].iamId;
             }
         }
+        
+        [HttpGet("titleCodes/iamip/{userId}")]
+        public async Task<string> GetIamId4(string userId)
+        {
+            using (var client = new HttpClient())
+            {
+                var url = "https://128.120.41.205/api/iam/people/prikerbacct/search?key=" + _authSettings.TitleCodesKey + "&v=1.0&userId=" + userId;
+                var response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                var contents = await response.Content.ReadAsStringAsync();
+                dynamic test = JsonConvert.DeserializeObject(contents);
+                return test.responseData.results[0].iamId;
+            }
+        }
 
         [HttpGet("titleCodes/codes/{iamId}")]
         public async Task<bool> GetCodes(string iamId)
