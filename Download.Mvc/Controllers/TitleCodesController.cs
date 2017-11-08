@@ -82,7 +82,7 @@ namespace Download.Controllers
         {
             using (var client = new HttpClient())
             {
-                var url = "https://128.120.41.205/api/iam/people/prikerbacct/search?key=" + _authSettings.TitleCodesKey + "&v=1.0&userId=" + userId;
+                var url = "http://128.120.41.205/api/iam/people/prikerbacct/search?key=" + _authSettings.TitleCodesKey + "&v=1.0&userId=" + userId;
                 var response = await client.GetAsync(url);
                 response.EnsureSuccessStatusCode();
                 var contents = await response.Content.ReadAsStringAsync();
