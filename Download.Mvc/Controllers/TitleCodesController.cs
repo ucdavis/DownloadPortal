@@ -80,15 +80,20 @@ namespace Download.Controllers
         [HttpGet("titleCodes/iamip/{userId}")]
         public async Task<string> GetIamIp(string userId)
         {
-            using (var client = new HttpClient())
+            using (var httpClientHandler = new HttpClientHandler())
             {
-                var url = "http://128.120.41.205/api/iam/people/prikerbacct/search?key=" + _authSettings.TitleCodesKey + "&v=1.0&userId=" + userId;
-                var response = await client.GetAsync(url);
-                response.EnsureSuccessStatusCode();
-                var contents = await response.Content.ReadAsStringAsync();
-                dynamic test = JsonConvert.DeserializeObject(contents);
-                return test.responseData.results[0].iamId;
-            }
+                // for testing, ignore cert checks
+                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };    
+                using (var client = new HttpClient(httpClientHandler))
+                {
+                    var url = "http://128.120.41.205/api/iam/people/prikerbacct/search?key=" + _authSettings.TitleCodesKey + "&v=1.0&userId=" + userId;
+                    var response = await client.GetAsync(url);
+                    response.EnsureSuccessStatusCode();
+                    var contents = await response.Content.ReadAsStringAsync();
+                    dynamic test = JsonConvert.DeserializeObject(contents);
+                    return test.responseData.results[0].iamId;
+                }
+            }        
         }
 
         [HttpGet("titleCodes/codes/{iamId}")]
