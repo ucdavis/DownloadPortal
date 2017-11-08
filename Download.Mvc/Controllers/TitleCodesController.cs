@@ -78,7 +78,7 @@ namespace Download.Controllers
         }
         
         [HttpGet("titleCodes/iamip/{userId}")]
-        public async Task<string> GetIamId4(string userId)
+        public async Task<string> GetIamIp(string userId)
         {
             using (var client = new HttpClient())
             {
