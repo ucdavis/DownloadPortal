@@ -80,7 +80,7 @@ namespace Download
                 AuthenticationScheme = "UCDCAS",
                 AutomaticChallenge = true,
                 AutomaticAuthenticate = true,
-                CasServerUrlBase = "https://cas.ucdavis.edu/cas/",
+                CasServerUrlBase = "https://cas.ucdavis.edu/cas",
                 CallbackPath = new PathString("/signin-cas")
             });
 
